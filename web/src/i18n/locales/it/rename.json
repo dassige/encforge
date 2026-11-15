@@ -195,5 +195,19 @@
     "restoreNames": "Ripristina i nomi",
     "restored": "Ripristinati {count} file",
     "restoredWithErrors": "Ripristinati {count} file; impossibile ripristinarne {errors}"
+  },
+  "manual": {
+    "button": "Rinomina…",
+    "buttonNamed": "Rinomina {name}",
+    "title": "Rinomina un video",
+    "label": "Nuovo nome",
+    "message": "Scrivi il nuovo nome. Senza estensione resta quella attuale; anche i file di sottotitoli con il nome del video vengono rinominati.",
+    "noSlash": "Un nome non può contenere / o \\",
+    "same": "È il suo nome attuale",
+    "historyName": "A mano",
+    "done": "Rinominato in “{name}”",
+    "taken": "quel nome era già usato, quindi è stato aggiunto un numero",
+    "subs_one": "rinominato anche {count} file di sottotitoli",
+    "subs_other": "rinominati anche {count} file di sottotitoli"
   }
 }

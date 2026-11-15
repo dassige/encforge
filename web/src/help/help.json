@@ -454,6 +454,7 @@
         "1. Pick the **Rules**. The built-in **Auto** recognises both TV episodes and movies.",
         "1. Look at the [preview](#rename.preview): fix any name by hand, and type a [show name](#rename.showName) where none was found.",
         "1. Press **Rename**. Every batch can be undone from [History](#rename.history).",
+        "To rename **one video by hand**, use the pencil (**Rename…**) next to it in the list on the left and type the new name. Subtitle files named after it are renamed too, a name already taken gets a number instead of replacing the other file, and it can be undone from [History](#rename.history).",
         "Files in a sources folder marked **Protect** in [Settings](#settings.folders) can’t be renamed (a download client may still be seeding them), nor can files that are queued or converting. A renamed source still counts as converted, and a watch folder doesn’t take it for a new file."
       ],
       "see": [

@@ -45,11 +45,11 @@ export function DialogProvider({ children }) {
           title, message, icon: danger ? 'warn' : 'info', cancelValue: undefined,
           buttons: [{ label: okLabel, value: undefined, primary: true, autoFocus: true }],
         }),
-      /** Resolves to the trimmed text, or null when cancelled. */
-      prompt: ({ title, message, label, value = '', placeholder, confirmLabel = t('common.ok'), validate } = {}) =>
+      /** Resolves to the trimmed text, or null when cancelled. select: [start, end] to select first (default: all). */
+      prompt: ({ title, message, label, value = '', placeholder, confirmLabel = t('common.ok'), validate, select } = {}) =>
         ask({
           title, message, cancelValue: null,
-          input: { label, value, placeholder, validate },
+          input: { label, value, placeholder, validate, select },
           buttons: [
             { label: t('common.cancel'), value: null },
             { label: confirmLabel, value: 'input', primary: true },
@@ -87,7 +87,8 @@ function AskDialog({ dialog }) {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
-      inputRef.current.select();
+      if (input?.select) inputRef.current.setSelectionRange(...input.select);
+      else inputRef.current.select();
     }
   }, []);
 
@@ -132,7 +133,7 @@ function AskDialog({ dialog }) {
                 press(buttons.find((b) => b.value === 'input'));
               }}
             >
-              <label>
+              <label className="prompt-field">
                 {input.label}
                 <input
                   ref={inputRef}

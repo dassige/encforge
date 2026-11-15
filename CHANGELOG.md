@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.5] - 2026/11/16
+
+- feat: Rename a single video by hand from the Rename page
+
+Each video in the Rename page's file list has a pencil button that
+asks for a new name, with the name before the extension selected.
+Without an extension the current one is kept; subtitle files named
+after the video are renamed too; a name already taken gets a number
+instead of replacing the other file; protected folders are refused.
+The rename is listed in History as "By hand" and can be undone. Text
+prompts now use a box as wide as the dialog. The help describes it
+in every language.
+
 ## [4.3.4] - 2026/11/14
 
 - feat: Reorder the sources folders in Settings

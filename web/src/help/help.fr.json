@@ -454,6 +454,7 @@
         "1. Choisissez les **Règles**. Le jeu intégré **Auto** reconnaît aussi bien les épisodes de séries que les films.",
         "1. Regardez l'[aperçu](#rename.preview) : corrigez un nom à la main si besoin, et saisissez un [nom de série](#rename.showName) là où aucun n'a été trouvé.",
         "1. Appuyez sur **Renommer**. Chaque lot peut être annulé depuis l'[Historique](#rename.history).",
+        "Pour renommer **une seule vidéo à la main**, utilisez le crayon (**Renommer…**) à côté du fichier dans la liste de gauche et saisissez le nouveau nom. Les fichiers de sous-titres portant son nom sont renommés aussi, un nom déjà pris reçoit un numéro au lieu de remplacer l’autre fichier, et l’opération peut être annulée depuis l’[Historique](#rename.history).",
         "Les fichiers d’un dossier de sources marqué **Protéger** dans les [Paramètres](#settings.folders) ne peuvent pas être renommés (un client de téléchargement les partage peut-être encore), pas plus que les fichiers en file d’attente ou en conversion. Une source renommée compte toujours comme convertie, et un dossier surveillé ne la prend pas pour un nouveau fichier."
       ],
       "see": [

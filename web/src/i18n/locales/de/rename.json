@@ -195,5 +195,19 @@
     "restoreNames": "Namen wiederherstellen",
     "restored": "{count} Datei(en) wiederhergestellt",
     "restoredWithErrors": "{count} Datei(en) wiederhergestellt; {errors} konnten nicht wiederhergestellt werden"
+  },
+  "manual": {
+    "button": "Umbenennen…",
+    "buttonNamed": "{name} umbenennen",
+    "title": "Ein Video umbenennen",
+    "label": "Neuer Name",
+    "message": "Geben Sie den neuen Namen ein. Ohne Endung bleibt die bisherige; nach dem Video benannte Untertiteldateien werden mit umbenannt.",
+    "noSlash": "Ein Name darf kein / oder \\ enthalten",
+    "same": "Das ist sein aktueller Name",
+    "historyName": "Von Hand",
+    "done": "Umbenannt in „{name}“",
+    "taken": "der Name war vergeben, daher wurde eine Zahl angehängt",
+    "subs_one": "{count} Untertiteldatei mit umbenannt",
+    "subs_other": "{count} Untertiteldateien mit umbenannt"
   }
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Captions, ChevronRight, Download, Eye, FileVideo, Folder, FolderOpen, ListPlus, Lock, RefreshCw, Trash2, Upload } from 'lucide-react';
+import { ArrowUp, Captions, ChevronRight, Download, Eye, FileVideo, Folder, FolderOpen, ListPlus, Lock, Pencil, RefreshCw, Trash2, Upload } from 'lucide-react';
 import { watchedFolder } from '../roots.js';
 import { api } from '../api.js';
 import { bytes, dateTime } from '../format.js';
@@ -64,7 +64,7 @@ export function browserRoots(settings, kind) {
  */
 export function SourceBrowser({
   settings, changeTick, onAdd, onError, root = 'source', title = t('sources.title'), addLabel, addTitle,
-  hint = t('sources.hint'), help, onUpload, allowDelete, onNotice, onWatch, sortId = root,
+  hint = t('sources.hint'), help, onUpload, allowDelete, onNotice, onWatch, onRenameFile, sortId = root,
 }) {
   const player = usePlayer();
   const addText = addLabel ?? t('sources.addLabel');
@@ -357,6 +357,21 @@ export function SourceBrowser({
             <span className="file-meta">
               {player && item.type === 'file' && isVideoName(settings, item.name) && (
                 <PlayButton className="row-play" onClick={() => player({ sources: [{ path: item.path }] })} />
+              )}
+              {onRenameFile && item.type === 'file' && isVideoName(settings, item.name) && (
+                <button
+                  type="button"
+                  className="icon-btn row-rename"
+                  title={t('rename.manual.button')}
+                  aria-label={t('rename.manual.buttonNamed', { name: item.name })}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRenameFile(item);
+                  }}
+                  onDoubleClick={(e) => e.stopPropagation()}
+                >
+                  <Pencil size={14} />
+                </button>
               )}
               <button
                 className="icon-btn row-download"

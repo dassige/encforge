@@ -198,5 +198,19 @@
     "restored_other": "Se restauraron {count} archivos",
     "restoredWithErrors_one": "Se restauró {count} archivo; {errors} no se pudieron restaurar",
     "restoredWithErrors_other": "Se restauraron {count} archivos; {errors} no se pudieron restaurar"
+  },
+  "manual": {
+    "button": "Renombrar…",
+    "buttonNamed": "Renombrar {name}",
+    "title": "Renombrar un vídeo",
+    "label": "Nombre nuevo",
+    "message": "Escriba el nombre nuevo. Sin extensión se conserva la actual; los archivos de subtítulos con el nombre del vídeo también se renombran.",
+    "noSlash": "Un nombre no puede contener / ni \\",
+    "same": "Ese es su nombre actual",
+    "historyName": "A mano",
+    "done": "Renombrado a «{name}»",
+    "taken": "ese nombre ya estaba en uso, así que se añadió un número",
+    "subs_one": "también se renombró {count} archivo de subtítulos",
+    "subs_other": "también se renombraron {count} archivos de subtítulos"
   }
 }

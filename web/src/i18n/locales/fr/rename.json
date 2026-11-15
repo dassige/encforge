@@ -202,5 +202,19 @@
     "restored_other": "{count} fichiers restaurés",
     "restoredWithErrors_one": "{count} fichier restauré ; {errors} n'ont pas pu être restaurés",
     "restoredWithErrors_other": "{count} fichiers restaurés ; {errors} n'ont pas pu être restaurés"
+  },
+  "manual": {
+    "button": "Renommer…",
+    "buttonNamed": "Renommer {name}",
+    "title": "Renommer une vidéo",
+    "label": "Nouveau nom",
+    "message": "Saisissez le nouveau nom. Sans extension, l’actuelle est conservée ; les fichiers de sous-titres portant le nom de la vidéo sont renommés aussi.",
+    "noSlash": "Un nom ne peut pas contenir / ou \\",
+    "same": "C’est déjà son nom",
+    "historyName": "À la main",
+    "done": "Renommé en « {name} »",
+    "taken": "ce nom était pris, un numéro a donc été ajouté",
+    "subs_one": "{count} fichier de sous-titres renommé aussi",
+    "subs_other": "{count} fichiers de sous-titres renommés aussi"
   }
 }

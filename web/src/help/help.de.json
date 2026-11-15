@@ -454,6 +454,7 @@
         "1. Wählen Sie die **Regeln**. Das integrierte **Auto** erkennt sowohl Serienfolgen als auch Filme.",
         "1. Sehen Sie sich die [Vorschau](#rename.preview) an: Korrigieren Sie jeden Namen von Hand und geben Sie einen [Serienname](#rename.showName) ein, wo keiner gefunden wurde.",
         "1. Klicken Sie auf **Umbenennen**. Jeder Stapel lässt sich im [Verlauf](#rename.history) rückgängig machen.",
+        "Um **ein einzelnes Video von Hand** umzubenennen, nutzen Sie den Stift (**Umbenennen…**) neben der Datei in der Liste links und geben den neuen Namen ein. Nach ihr benannte Untertiteldateien werden mit umbenannt, ein schon vergebener Name bekommt eine Zahl statt die andere Datei zu ersetzen, und es lässt sich im [Verlauf](#rename.history) rückgängig machen.",
         "Dateien in einem Quellordner, der in den [Einstellungen](#settings.folders) mit **Schützen** markiert ist, können nicht umbenannt werden (ein Download-Client seedet sie vielleicht noch), ebenso wenig Dateien in der Warteschlange oder in Konvertierung. Eine umbenannte Quelle zählt weiterhin als konvertiert, und ein überwachter Ordner hält sie nicht für eine neue Datei."
       ],
       "see": [

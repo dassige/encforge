@@ -432,6 +432,7 @@ export default function App({ auth, onAuthChange }) {
           changeTick={data.changeTick}
           run={run}
           onError={onError}
+          onNotice={onNotice}
         />
       ) : (
       <main className={`panes ${paneClass}`}>

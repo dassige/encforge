@@ -195,5 +195,19 @@
     "restoreNames": "Restore names",
     "restored": "Restored {count} file(s)",
     "restoredWithErrors": "Restored {count} file(s); {errors} could not be restored"
+  },
+  "manual": {
+    "button": "Rename…",
+    "buttonNamed": "Rename {name}",
+    "title": "Rename a video",
+    "label": "New name",
+    "message": "Type the new name. Without an extension the current one is kept; subtitle files named after the video are renamed too.",
+    "noSlash": "A name cannot contain / or \\",
+    "same": "That is its current name",
+    "historyName": "By hand",
+    "done": "Renamed to “{name}”",
+    "taken": "that name was taken, so a number was added",
+    "subs_one": "{count} subtitle file renamed too",
+    "subs_other": "{count} subtitle files renamed too"
   }
 }

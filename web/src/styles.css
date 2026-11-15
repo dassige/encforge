@@ -1092,5 +1092,9 @@ input[type='range'] { width: 100%; accent-color: var(--accent); }
 .player-seek input[type='range'] { flex: 1; accent-color: var(--accent); }
 .player-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .play-btn { color: var(--accent); }
-.file-row .row-play { width: 24px; height: 24px; }
+.file-row .row-play, .file-row .row-rename { width: 24px; height: 24px; }
 .q-name .play-btn { width: 24px; height: 24px; margin-right: 2px; vertical-align: middle; }
+
+/* Text prompts (Dialogs.jsx): the label above a box as wide as the dialog. */
+.prompt-field { display: flex; flex-direction: column; gap: 4px; }
+.prompt-field input { width: 100%; }

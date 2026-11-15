@@ -454,6 +454,7 @@
         "1. Scegli le **Regole**. Quella integrata **Auto** riconosce sia gli episodi TV sia i film.",
         "1. Guarda l’[anteprima](#rename.preview): correggi a mano qualsiasi nome e scrivi un [nome della serie](#rename.showName) dove non ne è stato trovato nessuno.",
         "1. Premi **Rinomina**. Ogni gruppo di rinomine si può annullare dalla [Cronologia](#rename.history).",
+        "Per rinominare **un solo video a mano**, usa la matita (**Rinomina…**) accanto al file nell’elenco a sinistra e scrivi il nuovo nome. Anche i file di sottotitoli con il suo nome vengono rinominati, un nome già usato riceve un numero invece di sostituire l’altro file, e si può annullare dalla [Cronologia](#rename.history).",
         "Non si possono rinominare i file in una cartella sorgenti segnata come **Proteggi** nelle [Impostazioni](#settings.folders) (un client di download potrebbe ancora farne il seeding), né i file in coda o in conversione. Una sorgente rinominata conta ancora come convertita, e una cartella monitorata non la prende per un file nuovo."
       ],
       "see": [

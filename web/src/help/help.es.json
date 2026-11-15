@@ -454,6 +454,7 @@
         "1. Elija las **Reglas**. La opción integrada **Auto** reconoce tanto episodios de series como películas.",
         "1. Revise la [vista previa](#rename.preview): corrija cualquier nombre a mano y escriba un [nombre de la serie](#rename.showName) donde no se haya encontrado ninguno.",
         "1. Pulse **Renombrar**. Cada lote puede deshacerse desde el [Historial](#rename.history).",
+        "Para renombrar **un solo vídeo a mano**, use el lápiz (**Renombrar…**) junto al archivo en la lista de la izquierda y escriba el nombre nuevo. Los archivos de subtítulos con su nombre también se renombran, un nombre ya usado recibe un número en lugar de sustituir al otro archivo, y se puede deshacer desde el [Historial](#rename.history).",
         "Los archivos de una carpeta de origen marcada con **Proteger** en [Ajustes](#settings.folders) no se pueden renombrar (un cliente de descargas puede seguir compartiéndolos), ni tampoco los archivos en cola o en conversión. Un origen renombrado sigue contando como convertido, y una carpeta vigilada no lo toma por un archivo nuevo."
       ],
       "see": [

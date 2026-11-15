@@ -30,6 +30,11 @@ function InfoChip({ info }) {
 const warningText = (w) => (typeof w === 'string' ? w : w?.text ?? '');
 const isBlocking = (w) => !warningText(w).startsWith('name already taken');
 
+/** "Film" or "Film.mkv" typed, "Film_1.mkv" given: the name was taken and the server added a number. */
+const baseOf = (n) => (/\.[a-z0-9]{1,5}$/i.test(n) ? n.replace(/\.[a-z0-9]{1,5}$/i, '') : n);
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+export const numberAdded = (typed, final, sep) => new RegExp(`^${escapeRe(baseOf(typed))}${escapeRe(sep)}\\d+$`, 'i').test(baseOf(final));
+
 function NameInput({ row, onCommit, disabled }) {
   const [value, setValue] = useState(row.newName);
   useEffect(() => setValue(row.newName), [row.newName]);
@@ -50,7 +55,7 @@ function NameInput({ row, onCommit, disabled }) {
   );
 }
 
-export function RenameView({ settings, rules, ruleId, setRuleId, paths, setPaths, changeTick, run, onError }) {
+export function RenameView({ settings, rules, ruleId, setRuleId, paths, setPaths, changeTick, run, onError, onNotice }) {
   const dialogs = useDialogs();
   const [showName, setShowName] = useState('');
   const [edits, setEdits] = useState({});
@@ -127,6 +132,39 @@ export function RenameView({ settings, rules, ruleId, setRuleId, paths, setPaths
     setTicks(new Map());
   }
 
+  /** Renames one video to a name typed by hand (the pencil in the list on the left). */
+  async function renameOne(item) {
+    const dot = item.name.lastIndexOf('.');
+    const name = await dialogs.prompt({
+      title: t('rename.manual.title'),
+      message: t('rename.manual.message'),
+      label: t('rename.manual.label'),
+      value: item.name,
+      // The name without its extension is selected, ready to be typed over.
+      select: [0, dot > 0 ? dot : item.name.length],
+      confirmLabel: t('common.rename'),
+      validate: (v) => (!v ? t('components.dialogs.typeValue') : /[\\/]/.test(v) ? t('rename.manual.noSlash') : v === item.name ? t('rename.manual.same') : null),
+    });
+    if (!name) return;
+    const r = await run(() => api.applyRename([{ path: item.path, newName: name }], t('rename.manual.historyName')));
+    if (!r) return;
+    if (r.errors.length) onError(new Error(r.errors.map((e) => `${e.path.split(/[\\/]/).pop()}: ${renameWarning(e.error)}`).join('; ')));
+    const main = r.renamed.find((x) => !x.companion);
+    if (!main) return;
+    const finalName = main.to.split(/[\\/]/).pop();
+    const subs = r.renamed.filter((x) => x.companion).length;
+    onNotice?.(
+      [
+        t('rename.manual.done', { name: finalName }),
+        // The server adds "<separator><number>" rather than overwrite another file.
+        numberAdded(name, finalName, settings?.renameSeparator ?? '_') ? t('rename.manual.taken') : null,
+        subs ? t('rename.manual.subs', { count: subs }) : null,
+      ].filter(Boolean).join(' · '),
+    );
+    // The file may be in the rename list too.
+    setPaths((p) => p.map((x) => (x === main.from ? main.to : x)));
+  }
+
   function toggle(row) {
     setTicks((m) => new Map(m).set(row.path, !isTicked(row)));
   }
@@ -152,6 +190,7 @@ export function RenameView({ settings, rules, ruleId, setRuleId, paths, setPaths
           addPaths(list);
           showPane(1);
         }}
+        onRenameFile={renameOne}
         onError={onError}
       />
 
