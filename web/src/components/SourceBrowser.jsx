@@ -298,9 +298,10 @@ export function SourceBrowser({
               className="btn ghost small danger"
               disabled={!selected.size}
               title={t('sources.deleteTitle')}
+              aria-label={t('common.delete')}
               onClick={deleteSelected}
             >
-              <Trash2 size={14} /> {t('common.delete')}
+              <Trash2 size={14} /> <span className="btn-label">{t('common.delete')}</span>
             </button>
           )}
           {allowDelete && !isProtected && (
@@ -308,9 +309,10 @@ export function SourceBrowser({
               className="btn ghost small"
               disabled={!selected.size || moving}
               title={t('sources.moveTitle')}
+              aria-label={t('common.move')}
               onClick={() => setMoveFrom([...selected])}
             >
-              <FolderInput size={14} className={moving ? 'spin' : ''} /> {t('common.move')}
+              <FolderInput size={14} className={moving ? 'spin' : ''} /> <span className="btn-label">{t('common.move')}</span>
             </button>
           )}
           {allowDelete && isProtected && (
@@ -322,9 +324,10 @@ export function SourceBrowser({
             className="btn ghost small"
             disabled={!selected.size}
             title={t('sources.downloadTitle')}
+            aria-label={t('common.download')}
             onClick={() => download(items.filter((i) => selected.has(i.path)))}
           >
-            <Download size={14} /> {t('common.download')}
+            <Download size={14} /> <span className="btn-label">{t('common.download')}</span>
           </button>
           <button className="btn primary small" disabled={!selected.size} onClick={() => onAdd([...selected])}>
             <ListPlus size={14} /> {addText}

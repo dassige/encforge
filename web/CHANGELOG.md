@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.6] - 2026/11/17
+
+- fix: The Sources panel's buttons overflowed a narrow panel
+
+With Move next to Delete, Download and Add to queue, the buttons no
+longer fitted the Sources panel. In a panel narrower than about 780
+pixels, Delete, Move and Download now show only their icons (their
+tooltips still name them); the buttons also wrap onto a second row
+instead of overflowing, for longer translations. "1 selected" stays
+on one line.
+
 ## [4.3.5] - 2026/11/17
 
 - feat: Move source files and folders to another folder
