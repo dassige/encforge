@@ -65,6 +65,21 @@
     "deleted_one": "{count} Element gelöscht",
     "deleted_other": "{count} Elemente gelöscht"
   },
+  "move": {
+    "notMoved": "Nicht verschoben:",
+    "notMovedList": "Nicht verschoben: {list}",
+    "nothingTitle": "Nichts kann verschoben werden",
+    "title": "Auf dem Server verschieben?",
+    "summary": "{what} wird nach {dest} verschoben: {files}, {size}.",
+    "note": "Nichts wird überschrieben. Zwischen verschiedenen Datenträgern oder Freigaben werden die Dateien kopiert und danach entfernt; bei großen Dateien kann das dauern.",
+    "move": "Verschieben",
+    "moveItems_one": "{count} Element verschieben",
+    "moveItems_other": "{count} Elemente verschieben",
+    "moving_one": "{count} Element wird verschoben…",
+    "moving_other": "{count} Elemente werden verschoben…",
+    "moved_one": "{count} Element verschoben",
+    "moved_other": "{count} Elemente verschoben"
+  },
   "sort": {
     "label": "Sortieren nach",
     "name": "Name",

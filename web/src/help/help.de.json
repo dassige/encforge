@@ -24,7 +24,7 @@
         "Um alte oder qualitativ schwache Dateien irgendwo in Ihren Ordnern zu finden, verwenden Sie **Qualität**: siehe [Qualitätsprüfung](#quality.overview).",
         "Um Dateien zu finden, deren Namen nicht Ihren Umbenennungsregeln folgen, verwenden Sie **Namen**: siehe [Namensprüfung](#naming.overview).",
         "Um zu konvertieren, ohne dabei zu sein: Ein [Zeitfenster](#settings.schedule) lässt die Warteschlange nachts laufen, [überwachte Ordner](#settings.watch) fügen neue Downloads von selbst hinzu, und [Benachrichtigungen](#settings.notifications) sagen Ihnen, wie es gelaufen ist. **Statistik** zeigt, was konvertiert wurde: siehe [Statistik](#stats.overview).",
-        "Quelldateien werden nie verändert, Downloads können also weiter geseedet werden. Sie werden nur gelöscht, wenn Sie es verlangen: siehe [Quelldateien löschen](#delete.overview).",
+        "Quelldateien werden nie verändert, Downloads können also weiter geseedet werden. Sie werden nur gelöscht oder verschoben, wenn Sie es verlangen: siehe [Quelldateien löschen](#delete.overview) und [Quelldateien verschieben](#move.overview).",
         "Auf dem Smartphone funktioniert die App genauso: Ansichten mit zwei Bereichen (Quellen und Warteschlange, Dateien und Umbenennungsliste …) zeigen jeweils einen Bereich, mit einem Umschalter darüber; beim Hinzufügen von Dateien springt die Ansicht zum zweiten Bereich. Drag-and-drop braucht eine Maus, nutzen Sie auf einem Touchscreen also die Kontrollkästchen und **Zur Warteschlange hinzufügen** sowie die Schaltflächen **Hoch**, **Runter**, **An den Anfang** und **Ans Ende** in den Details eines Auftrags, um die Warteschlange umzusortieren.",
         "Unter Einstellungen → **Über** finden Sie die Version, die Versionshinweise, die Danksagungen und die Lizenz (GNU GPL, Version 2)."
       ],
@@ -54,6 +54,7 @@
         "- **Hochladen** sendet Videos von Ihrem Computer in den geöffneten Ordner; das Ablegen von Dateien von Ihrem Computer auf dem Bereich bewirkt dasselbe. Siehe [Videos hochladen](#upload.overview).",
         "- **Herunterladen** kopiert die ausgewählten Dateien oder Ordner auf Ihren Computer: siehe [Dateien herunterladen](#download.overview).",
         "- **Löschen** entfernt die ausgewählten Dateien oder Ordner nach einer Bestätigung vom Server: siehe [Quelldateien löschen](#delete.overview).",
+        "- **Verschieben** legt die ausgewählten Dateien oder Ordner nach einer Bestätigung in einen anderen Ordner auf dem Server (einen Quellordner oder den Zielordner): siehe [Quelldateien verschieben](#move.overview).",
         "Das Hinzufügen von Dateien startet nie die Konvertierung: Klicken Sie auf **Starten**, wenn Sie bereit sind ([Warum?](#queue.state))."
       ],
       "see": [
@@ -62,7 +63,8 @@
         "queue.state",
         "upload.overview",
         "download.overview",
-        "delete.overview"
+        "delete.overview",
+        "move.overview"
       ]
     },
     "convert.queue": {
@@ -356,7 +358,7 @@
         "Ordner auf dem Server (nicht auf Ihrem Computer). Auf dem Server eingebundene NAS-Freigaben funktionieren ebenfalls.",
         "- **Quellordner**: wo die zu konvertierenden Dateien liegen. Fügen Sie so viele hinzu, wie Sie brauchen, mit **Quellordner hinzufügen**; der Bereich „Quellen“ zeigt jeweils einen und kann nicht darüber hinaus navigieren. Das Entfernen eines Ordners aus der Liste löscht nichts. Ihre Reihenfolge, die Sie mit den Pfeilen ändern, ist überall die Reihenfolge der Ordnerlisten; der erste wird zuerst geöffnet.",
         "- **Name** (optional) bei einem Quellordner: ein Anzeigename wie „Downloads“, der im Bereich „Quellen“, in den Ordnerlisten und in der Ansicht „Qualität“ statt des Pfads angezeigt wird. Jeder Name kann nur einmal vergeben werden, höchstens 40 Zeichen; bei leerem Namen wird der eigene Name des Ordners angezeigt.",
-        "- **Schützen** bei einem Quellordner: verhindert, dass seine Dateien und Ordner aus der App gelöscht oder umbenannt werden, z. B. den Ordner, aus dem ein Download-Client noch seedet. Im Bereich „Quellen“ zeigt ein solcher Ordner **Geschützt** statt der Schaltfläche „Löschen“, und auch der Server lehnt dort Löschen und Umbenennen ab.",
+        "- **Schützen** bei einem Quellordner: verhindert, dass seine Dateien und Ordner aus der App gelöscht, verschoben oder umbenannt werden, z. B. den Ordner, aus dem ein Download-Client noch seedet. Im Bereich „Quellen“ zeigt ein solcher Ordner **Geschützt** statt der Schaltflächen „Löschen“ und „Verschieben“, und auch der Server lehnt dort Löschen, Verschieben und Umbenennen ab.",
         "- **Zielordner**: wohin konvertierte Dateien geschrieben werden. Die Ansichten „Umbenennen“ und „Zusammenführen“ arbeiten nur hier.",
         "Alle müssen existieren. Das Ziel darf nicht in einem Quellordner liegen, und ein Quellordner nicht in einem anderen. In Docker müssen sie im Ordner liegen, der in den Container eingebunden ist (`MEDIA_DIR`, meist `/mnt`).",
         "Die Ausgabestrukturen **Name des Quellordners**, **Serien- und Staffelordner** und **Vollständiger Quellpfad** werden aus dem Quellordner berechnet, in dem die jeweilige Datei liegt."
@@ -820,6 +822,29 @@
       ],
       "see": [
         "convert.sources",
+        "move.overview",
+        "settings.folders"
+      ]
+    },
+    "move.overview": {
+      "title": "Quelldateien verschieben",
+      "body": [
+        "Legt Dateien oder Ordner aus einem Quellordner in einen anderen Ordner auf dem Server: einen Unterordner, einen anderen Quellordner oder den Zielordner.",
+        "1. Markieren Sie in **Konvertieren** die Dateien oder Ordner unter [Quellen](#convert.sources).",
+        "1. Klicken Sie auf **Verschieben** und wählen Sie das Ziel: Die Schaltflächen oben wechseln zwischen den Quellordnern und dem Zielordner, und Unterordner öffnen Sie, um tiefer zu gehen. Klicken Sie auf **Hierher verschieben**.",
+        "1. Die Bestätigung zeigt genau, was wohin verschoben wird. Klicken Sie zum Bestätigen auf **Verschieben**.",
+        "Die [Untertiteldateien](#subtitles.overview) eines Videos gehen mit und behalten ihren Platz neben dem Video (auch in einem `Subs`-Ordner); die Bestätigung listet sie auf.",
+        "Nichts wird überschrieben: Ein Name, den es im Ziel schon gibt, wird abgelehnt. Zwischen verschiedenen Datenträgern oder NAS-Freigaben werden die Dateien kopiert und danach an ihrem alten Ort entfernt; bei großen Dateien kann das dauern. Schlägt eine Kopie fehl, bleibt das Original, wo es war.",
+        "Die App erkennt Dateien an ihrem Ort: Eine verschobene Datei zeigt ihr Abzeichen **Konvertiert** nicht mehr. Wenn ein Download-Client wie Deluge die Dateien noch seedet, meldet er sie als fehlend.",
+        "### Was abgelehnt wird",
+        "- Dateien, die in der Warteschlange stehen, konvertiert werden oder angehalten sind, und Ordner, die eine enthalten. Entfernen Sie sie zuerst aus der Warteschlange.",
+        "- Alles in einem Quellordner, der in den [Einstellungen](#settings.folders) mit **Schützen** markiert ist, und ein Quellordner selbst.",
+        "- Eine Datei, die schon im gewählten Ordner liegt, und ein Ordner in sich selbst oder einen seiner Unterordner.",
+        "- Alles im Zielordner: Konvertierte Dateien werden von hier aus nicht verschoben."
+      ],
+      "see": [
+        "convert.sources",
+        "delete.overview",
         "settings.folders"
       ]
     },

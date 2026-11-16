@@ -82,11 +82,11 @@ export const schemas = [
   {
     $id: 'DeleteBlocked',
     type: 'object',
-    description: 'Something that cannot be deleted.',
+    description: 'Something that cannot be deleted or moved.',
     properties: {
       path: { type: 'string' },
       reason: { type: 'string', description: 'Why, in English.' },
-      code: { type: 'string', description: 'protected, sourcesFolder, pendingFile or pendingFiles; absent when the path is outside the sources folders or does not exist.' },
+      code: { type: 'string', description: 'protected, sourcesFolder, pendingFile or pendingFiles; when moving also sameFolder, intoItself or exists. Absent when the path is outside the sources folders or does not exist.' },
       params: { type: 'object', description: 'Values for wording the reason (root, name, count).' },
     },
   },
@@ -282,6 +282,82 @@ export const paths = {
         },
       },
       400: { description: 'No paths, or more than 1000.', $ref: 'Error#' },
+    },
+  },
+  'POST /api/files/move/preview': {
+    operationId: 'previewMoveFiles',
+    tags: ['Folders'],
+    summary: 'What moving would do',
+    description: [
+      'Changes nothing. Checks the chosen files and folders and says what `POST /api/files/move` would move into `dest`, where each item would go, and what it would refuse. At most 1000 paths.',
+      '',
+      'Only files and folders in the sources folders can be moved, with the same rules as deleting: never a sources folder itself, anything in a protected sources folder (Settings → Folders), or files that are queued or converting (or folders holding some). The destination is any folder under a sources folder or the target folder.',
+      'Also refused (listed in `blocked`): an item already in the destination folder, a folder into itself or one of its sub-folders, and a name already taken in the destination: nothing is overwritten.',
+      'A video takes its subtitle files with it (items with `sidecarOf`), keeping their place next to it (a `Subs` folder too). A folder is moved with everything in it.',
+    ].join('\n'),
+    body: {
+      type: 'object',
+      properties: {
+        paths: { type: 'array', items: { type: 'string' }, description: 'Absolute paths of files and folders.' },
+        dest: { type: 'string', description: 'Absolute path of the folder to move them into.' },
+      },
+      required: ['paths', 'dest'],
+    },
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          dest: { type: 'string', description: 'The destination folder.' },
+          items: {
+            type: 'array',
+            description: 'What would be moved.',
+            items: {
+              type: 'object',
+              properties: {
+                path: { type: 'string' },
+                to: { type: 'string', description: 'Where it would go.' },
+                type: { type: 'string', enum: ['file', 'dir'] },
+                files: { type: 'integer', description: 'Files in it (1 for a file).' },
+                bytes: { type: 'integer' },
+                sidecarOf: { type: 'string', description: 'For a subtitle file that goes with a chosen video: that video.' },
+              },
+            },
+          },
+          blocked: { type: 'array', items: { $ref: 'DeleteBlocked#' }, description: 'What would be left alone, with the reason.' },
+          files: { type: 'integer', description: 'Total files in items.' },
+          bytes: { type: 'integer', description: 'Total bytes in items.' },
+        },
+      },
+      400: { description: 'No paths, more than 1000, or the destination is not a folder under the configured folders.', $ref: 'Error#' },
+    },
+  },
+  'POST /api/files/move': {
+    operationId: 'moveFiles',
+    tags: ['Folders'],
+    summary: 'Move files and folders',
+    description: 'Moves into `dest` what `POST /api/files/move/preview` says can go, checking everything again first. Between disks or shares a file is copied (under a hidden name until complete) and the original removed afterwards, so this can take a while for big files; a failed copy leaves the original where it was. What is refused comes back in `blocked`; a failure on one item is in `errors` and does not stop the others.',
+    body: {
+      type: 'object',
+      properties: {
+        paths: { type: 'array', items: { type: 'string' }, description: 'Absolute paths of files and folders.' },
+        dest: { type: 'string', description: 'Absolute path of the folder to move them into.' },
+      },
+      required: ['paths', 'dest'],
+    },
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          moved: {
+            type: 'array',
+            items: { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } } },
+            description: 'What was moved, and where.',
+          },
+          blocked: { type: 'array', items: { $ref: 'DeleteBlocked#' } },
+          errors: { type: 'array', items: { type: 'object', properties: { path: { type: 'string' }, reason: { type: 'string' } } } },
+        },
+      },
+      400: { description: 'No paths, more than 1000, or the destination is not a folder under the configured folders.', $ref: 'Error#' },
     },
   },
 
@@ -520,6 +596,8 @@ export const examples = [
   { method: 'POST', url: '/api/folders', body: { parent: '/mnt/downloads', name: 'New folder' } },
   { method: 'POST', url: '/api/files/delete/preview', body: { paths: ['/mnt/downloads/Film.mkv'] } },
   { method: 'POST', url: '/api/files/delete', body: { paths: ['/mnt/downloads/Film.mkv'] } },
+  { method: 'POST', url: '/api/files/move/preview', body: { paths: ['/mnt/downloads/Film.mkv'], dest: '/mnt/media/Films' } },
+  { method: 'POST', url: '/api/files/move', body: { paths: ['/mnt/downloads/Film.mkv'], dest: '/mnt/media/Films' } },
 
   { method: 'GET', url: '/api/download?path=%2Fmnt%2Fdownloads%2FFilm.mkv' },
   { method: 'POST', url: '/api/download/subtitles', body: { paths: ['/mnt/downloads/Film.mkv'] } },

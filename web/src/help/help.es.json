@@ -24,7 +24,7 @@
         "Para encontrar archivos antiguos o de baja calidad en cualquier lugar de sus carpetas, use **Calidad**: consulte [Control de calidad](#quality.overview).",
         "Para encontrar archivos cuyos nombres no siguen sus reglas de renombrado, use **Nombres**: consulte [Control de nombres](#naming.overview).",
         "Para convertir sin estar presente: una [franja de conversión](#settings.schedule) ejecuta la cola por la noche, las [carpetas vigiladas](#settings.watch) añaden por sí solas las descargas nuevas y las [notificaciones](#settings.notifications) le avisan de cómo fue todo. **Estadísticas** muestra lo que se ha convertido: consulte [Estadísticas](#stats.overview).",
-        "Los archivos de origen nunca se modifican, así que las descargas pueden seguir compartiéndose. Solo se eliminan cuando usted lo pide: consulte [Eliminar archivos de origen](#delete.overview).",
+        "Los archivos de origen nunca se modifican, así que las descargas pueden seguir compartiéndose. Solo se eliminan o se mueven cuando usted lo pide: consulte [Eliminar archivos de origen](#delete.overview) y [Mover archivos de origen](#move.overview).",
         "En un teléfono la aplicación funciona igual: las vistas con dos paneles (Orígenes y cola, archivos y lista de renombrado…) muestran un panel cada vez, con un selector encima; al añadir archivos se pasa al segundo panel. Arrastrar y soltar requiere un ratón, así que en una pantalla táctil use las casillas y **Añadir a la cola**, y los botones **Subir**, **Bajar**, **Mover al principio** y **Mover al final** en los detalles de un trabajo para reordenar la cola.",
         "En Ajustes → **Acerca de** encontrará la versión, las notas de la versión, los créditos y la licencia (GNU GPL, versión 2)."
       ],
@@ -54,6 +54,7 @@
         "- **Subir** envía videos desde su equipo a la carpeta abierta; soltar archivos de su equipo sobre el panel hace lo mismo. Consulte [Subir videos](#upload.overview).",
         "- **Descargar** copia en su equipo los archivos o carpetas seleccionados: consulte [Descargar archivos](#download.overview).",
         "- **Eliminar** borra del servidor los archivos o carpetas seleccionados, tras una confirmación: consulte [Eliminar archivos de origen](#delete.overview).",
+        "- **Mover** lleva los archivos o carpetas seleccionados a otra carpeta del servidor (una carpeta de origen o la carpeta de destino), tras una confirmación: consulte [Mover archivos de origen](#move.overview).",
         "Añadir archivos nunca inicia la conversión: pulse **Iniciar** cuando esté listo ([por qué](#queue.state))."
       ],
       "see": [
@@ -62,7 +63,8 @@
         "queue.state",
         "upload.overview",
         "download.overview",
-        "delete.overview"
+        "delete.overview",
+        "move.overview"
       ]
     },
     "convert.queue": {
@@ -356,7 +358,7 @@
         "Carpetas del servidor (no de su equipo). Los recursos compartidos de un NAS montados en el servidor también sirven.",
         "- **Carpetas de origen**: dónde están los archivos que se van a convertir. Añada tantas como necesite con **Añadir una carpeta de origen**; el panel Orígenes muestra una cada vez y no puede subir por encima de ella. Quitar una carpeta de la lista no elimina nada. Su orden, que se cambia con las flechas, es el orden de las listas de carpetas en todas partes; la primera se abre primero.",
         "- **Nombre** (opcional) en una carpeta de origen: un nombre descriptivo como «Descargas», que se muestra en lugar de la ruta en el panel Orígenes, en las listas de carpetas y en la vista Calidad. Cada nombre puede usarse una vez, con un máximo de 40 caracteres; si se deja vacío se muestra el nombre propio de la carpeta.",
-        "- **Proteger** en una carpeta de origen: impide que sus archivos y carpetas se eliminen o renombren desde la aplicación, por ejemplo, la carpeta desde la que un cliente de descargas sigue compartiendo. En el panel Orígenes, una carpeta así muestra **Protegida** en lugar del botón Eliminar, y el servidor también rechaza allí las eliminaciones y los renombrados.",
+        "- **Proteger** en una carpeta de origen: impide que sus archivos y carpetas se eliminen, se muevan o se renombren desde la aplicación, por ejemplo, la carpeta desde la que un cliente de descargas sigue compartiendo. En el panel Orígenes, una carpeta así muestra **Protegida** en lugar de los botones Eliminar y Mover, y el servidor también rechaza allí las eliminaciones, los movimientos y los renombrados.",
         "- **Carpeta de destino**: dónde se escriben los archivos convertidos. Las vistas Renombrar y Unir solo trabajan aquí.",
         "Todas deben existir. El destino no puede estar dentro de una carpeta de origen, y una carpeta de origen no puede estar dentro de otra. En Docker deben estar dentro de la carpeta montada en el contenedor (`MEDIA_DIR`, normalmente `/mnt`).",
         "Las disposiciones de salida **Nombre de la carpeta de origen**, **Carpetas de serie y temporada** y **Ruta de origen completa** se calculan a partir de la carpeta de origen en la que está cada archivo."
@@ -820,6 +822,29 @@
       ],
       "see": [
         "convert.sources",
+        "move.overview",
+        "settings.folders"
+      ]
+    },
+    "move.overview": {
+      "title": "Mover archivos de origen",
+      "body": [
+        "Lleva archivos o carpetas de una carpeta de origen a otra carpeta del servidor: una subcarpeta, otra carpeta de origen o la carpeta de destino.",
+        "1. En **Convertir**, marque los archivos o carpetas en [Orígenes](#convert.sources).",
+        "1. Pulse **Mover** y elija el destino: los botones de arriba cambian entre las carpetas de origen y la carpeta de destino, y se abren las subcarpetas para bajar. Pulse **Mover aquí**.",
+        "1. La confirmación muestra exactamente qué se moverá, y adónde. Pulse **Mover** para confirmar.",
+        "Los [archivos de subtítulos](#subtitles.overview) de un vídeo van con él y mantienen su lugar junto al vídeo (también en una carpeta `Subs`); la confirmación los enumera.",
+        "No se sobrescribe nada: un nombre que ya existe en el destino se rechaza. Entre discos o recursos compartidos NAS distintos, los archivos se copian y luego se eliminan de donde estaban, lo que puede tardar con archivos grandes; una copia que falla deja el original donde estaba.",
+        "La aplicación reconoce los archivos por su ubicación: un archivo movido ya no muestra su insignia **Convertido**. Si un cliente de descargas como Deluge sigue compartiendo los archivos, los indicará como no encontrados.",
+        "### Qué se rechaza",
+        "- Los archivos que están en cola, convirtiéndose o en pausa, y las carpetas que contienen alguno. Quítelos antes de la cola.",
+        "- Todo lo que esté en una carpeta de origen marcada como **Proteger** en [Ajustes](#settings.folders), y una carpeta de origen en sí.",
+        "- Un archivo que ya está en la carpeta elegida, y una carpeta dentro de sí misma o de una de sus subcarpetas.",
+        "- Todo lo que esté en la carpeta de destino: los archivos convertidos no se mueven desde aquí."
+      ],
+      "see": [
+        "convert.sources",
+        "delete.overview",
         "settings.folders"
       ]
     },

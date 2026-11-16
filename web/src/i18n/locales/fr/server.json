@@ -147,6 +147,15 @@
     "pendingFile": "{name} est en attente ou en conversion ; retirez-le d'abord de la file d'attente",
     "pendingFiles": "{count} fichiers à l'intérieur sont en attente ou en conversion ; retirez-les d'abord de la file d'attente"
   },
+  "move": {
+    "protected": "Les fichiers de {root} sont protégés : ils ne peuvent pas être déplacés (Paramètres → Dossiers)",
+    "sourcesFolder": "Un dossier de sources lui-même ne peut pas être déplacé",
+    "pendingFile": "{name} est en attente ou en conversion ; retirez-le d'abord de la file d'attente",
+    "pendingFiles": "{count} fichiers à l'intérieur sont en attente ou en conversion ; retirez-les d'abord de la file d'attente",
+    "sameFolder": "{name} est déjà dans ce dossier",
+    "intoItself": "Le dossier {name} ne peut pas être déplacé dans lui-même",
+    "exists": "{name} existe déjà dans le dossier de destination"
+  },
   "backup": {
     "busy": {
       "conversion": "une conversion est en cours",

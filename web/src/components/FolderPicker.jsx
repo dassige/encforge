@@ -11,9 +11,11 @@ const SORT_KEYS = ['name', 'date'];
 
 /**
  * Lets you pick a folder under the sources folders by browsing the server, instead
- * of typing its path. onPick(path) gets the chosen folder.
+ * of typing its path. onPick(path) gets the chosen folder; chooseLabel is its button's text.
  */
-export function FolderPicker({ settings, title = t('components.folderPicker.title'), initial, onPick, onClose, onError, kind = 'source' }) {
+export function FolderPicker({
+  settings, title = t('components.folderPicker.title'), chooseLabel = t('components.folderPicker.choose'), initial, onPick, onClose, onError, kind = 'source',
+}) {
   // kind 'any': the target folder too (the server only lets the app browse the configured folders).
   const roots = kind === 'any' ? [...settings.sourceRoots, settings.targetRoot] : settings.sourceRoots;
   const startRoot = roots.find((r) => initial && (initial === r || initial.startsWith(r))) ?? roots[0];
@@ -55,7 +57,7 @@ export function FolderPicker({ settings, title = t('components.folderPicker.titl
         <>
           <span className="picker-path mono" title={listing?.path}>{listing?.path ?? '…'}</span>
           <button className="btn" onClick={onClose}>{t('common.cancel')}</button>
-          <button className="btn primary" disabled={!listing} onClick={() => onPick(listing.path)}>{t('components.folderPicker.choose')}</button>
+          <button className="btn primary" disabled={!listing} onClick={() => onPick(listing.path)}>{chooseLabel}</button>
         </>
       }
     >

@@ -122,6 +122,9 @@ export function mergeProblem(problem) {
 /** Why a file can't be deleted: { path, reason, code?, params? }. */
 export const deleteReason = (blocked) => fromCode('server.delete', blocked.code, blocked.params) ?? blocked.reason;
 
+/** Why a file or folder cannot be moved: { path, reason, code?, params? } → "film.mkv is already in that folder". */
+export const moveReason = (blocked) => fromCode('server.move', blocked.code, blocked.params) ?? blocked.reason;
+
 /** Why a full restore can't run now (backup inspection) → "a conversion is running", or null. */
 export const backupBusy = (inspection) =>
   inspection.busy ? fromCode('server.backup.busy', inspection.busyCode) ?? inspection.busy : null;

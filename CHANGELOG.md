@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.6] - 2026/11/17
+
+- feat: Move source files and folders to another folder
+
+The Sources panel in Convert has a Move button next to Delete. It
+opens the folder picker, where the destination can be any sources
+folder or the target folder, or a sub-folder of one. A confirmation
+lists what will be moved and where, and anything refused with the
+reason. A video's subtitle files go with it and keep their place next
+to it (a Subs folder too). Moves have the same limits as deleting:
+nothing in a protected folder, no sources folder itself, and no files
+that are queued or converting. A file already in the chosen folder, a
+folder moved into itself and a name already taken at the destination
+are refused too, so nothing is overwritten. Between disks or shares
+the files are copied under a hidden name and the original is removed
+last, so a failed copy leaves it where it was. New endpoints: POST
+/api/files/move/preview and POST /api/files/move (admin). The help
+and the API docs describe it in every language.
+
 ## [4.3.5] - 2026/11/16
 
 - feat: Rename a single video by hand from the Rename page

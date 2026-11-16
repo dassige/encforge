@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Captions, ChevronRight, Download, Eye, FileVideo, Folder, FolderOpen, ListPlus, Lock, Pencil, RefreshCw, Trash2, Upload } from 'lucide-react';
+import { ArrowUp, Captions, ChevronRight, Download, Eye, FileVideo, Folder, FolderInput, FolderOpen, ListPlus, Lock, Pencil, RefreshCw, Trash2, Upload } from 'lucide-react';
 import { watchedFolder } from '../roots.js';
 import { api } from '../api.js';
 import { bytes, dateTime } from '../format.js';
@@ -8,6 +8,8 @@ import { PlayButton, isVideoName, usePlayer } from '../player/Player.jsx';
 import { Help } from '../help/Help.jsx';
 import { downloadTitle, useDownload } from '../download/useDownload.jsx';
 import { useDeleteFiles } from './useDeleteFiles.jsx';
+import { useMoveFiles } from './useMoveFiles.jsx';
+import { FolderPicker } from './FolderPicker.jsx';
 import { t } from '../i18n/index.js';
 import { sortList, useRememberedSort } from '../sort.js';
 import { SortControl } from './SortControl.jsx';
@@ -78,6 +80,10 @@ export function SourceBrowser({
   const lastClicked = useRef(null);
   const download = useDownload(onError);
   const removeFiles = useDeleteFiles({ onError, onNotice });
+  const moveFiles = useMoveFiles({ onError, onNotice });
+  // The paths being moved while the destination is chosen; moving: the move is running.
+  const [moveFrom, setMoveFrom] = useState(null);
+  const [moving, setMoving] = useState(false);
   const roots = browserRoots(settings, root);
   const rootsKey = roots.join('|');
   const [chosenRoot, setChosenRoot] = useState(() => readStore(storeKey(root)));
@@ -165,6 +171,18 @@ export function SourceBrowser({
   async function deleteSelected() {
     if (await removeFiles([...selected])) {
       setSelected(new Set());
+      load(dir, { keepSelection: true });
+    }
+  }
+
+  async function moveTo(dest) {
+    const paths = moveFrom;
+    setMoveFrom(null);
+    setMoving(true);
+    try {
+      if (await moveFiles(paths, dest)) setSelected(new Set());
+    } finally {
+      setMoving(false);
       load(dir, { keepSelection: true });
     }
   }
@@ -285,6 +303,16 @@ export function SourceBrowser({
               <Trash2 size={14} /> {t('common.delete')}
             </button>
           )}
+          {allowDelete && !isProtected && (
+            <button
+              className="btn ghost small"
+              disabled={!selected.size || moving}
+              title={t('sources.moveTitle')}
+              onClick={() => setMoveFrom([...selected])}
+            >
+              <FolderInput size={14} className={moving ? 'spin' : ''} /> {t('common.move')}
+            </button>
+          )}
           {allowDelete && isProtected && (
             <span className="protected-note" title={t('sources.protectedTitle')}>
               <Lock size={13} /> {t('sources.protected')}
@@ -400,6 +428,18 @@ export function SourceBrowser({
         ))}
       </ul>
       <p className="hint">{hint}</p>
+      {moveFrom && (
+        <FolderPicker
+          settings={settings}
+          kind="any"
+          title={t('sources.moveTo', { count: moveFrom.length })}
+          chooseLabel={t('sources.moveHere')}
+          initial={listing?.path}
+          onPick={moveTo}
+          onClose={() => setMoveFrom(null)}
+          onError={onError}
+        />
+      )}
     </section>
   );
 }

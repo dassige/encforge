@@ -251,6 +251,7 @@ test('auth: every admin route exists, and routes get the expected access', async
   assert.equal(routeAccess('HEAD', '/api/download'), 'read');
   assert.equal(routeAccess('POST', '/api/jobs'), 'queue');
   assert.equal(routeAccess('POST', '/api/files/delete'), 'admin');
+  assert.equal(routeAccess('POST', '/api/files/move'), 'admin');
   assert.equal(routeAccess('GET', '/api/backup'), 'admin');
   assert.equal(routeAccess('GET', '/api/auth/keys'), 'session');
   assert.equal(routeAccess('GET', '/api/health'), 'public');

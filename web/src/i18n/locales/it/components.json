@@ -65,6 +65,21 @@
     "deleted_one": "Eliminato {count} elemento",
     "deleted_other": "Eliminati {count} elementi"
   },
+  "move": {
+    "notMoved": "Non spostati:",
+    "notMovedList": "Non spostati: {list}",
+    "nothingTitle": "Non si può spostare niente",
+    "title": "Spostare sul server?",
+    "summary": "{what} verrà spostato in {dest}: {files}, {size}.",
+    "note": "Niente viene sovrascritto. Tra dischi o condivisioni diversi i file vengono copiati e poi rimossi, il che può richiedere un po’ di tempo per i file grandi.",
+    "move": "Sposta",
+    "moveItems_one": "Sposta {count} elemento",
+    "moveItems_other": "Sposta {count} elementi",
+    "moving_one": "Spostamento di {count} elemento…",
+    "moving_other": "Spostamento di {count} elementi…",
+    "moved_one": "Spostato {count} elemento",
+    "moved_other": "Spostati {count} elementi"
+  },
   "sort": {
     "label": "Ordina per",
     "name": "Nome",

@@ -24,7 +24,7 @@
         "To find old or low-quality files anywhere in your folders, use **Quality**: see [Quality check](#quality.overview).",
         "To find files whose names don’t follow your rename rules, use **Naming**: see [Naming check](#naming.overview).",
         "To convert without being there: a [conversion window](#settings.schedule) runs the queue at night, [watch folders](#settings.watch) add new downloads by themselves, and [notifications](#settings.notifications) tell you how it went. **Stats** shows what has been converted: see [Stats](#stats.overview).",
-        "Source files are never changed, so downloads can keep seeding. They are deleted only when you ask: see [Deleting source files](#delete.overview).",
+        "Source files are never changed, so downloads can keep seeding. They are deleted or moved only when you ask: see [Deleting source files](#delete.overview) and [Moving source files](#move.overview).",
         "On a phone the app works the same way: views with two panels (Sources and Queue, files and the rename list…) show one panel at a time, with a switch above them; adding files jumps to the second panel. Drag and drop needs a mouse, so on a touch screen use the check boxes and **Add to queue**, and the **Up**, **Down**, **Move to top** and **Move to bottom** buttons in a job's details to reorder the queue.",
         "Settings → **About** has the version, release notes, credits and the licence (GNU GPL, version 2)."
       ],
@@ -54,6 +54,7 @@
         "- **Upload** sends videos from your computer into the open folder; dropping files from your computer onto the panel does the same. See [Uploading videos](#upload.overview).",
         "- **Download** copies the selected files or folders to your computer: see [Downloading files](#download.overview).",
         "- **Delete** removes the selected files or folders from the server, after a confirmation: see [Deleting source files](#delete.overview).",
+        "- **Move** puts the selected files or folders in another folder on the server (a sources folder or the target folder), after a confirmation: see [Moving source files](#move.overview).",
         "Adding files never starts converting: press **Start** when you are ready ([why](#queue.state))."
       ],
       "see": [
@@ -62,7 +63,8 @@
         "queue.state",
         "upload.overview",
         "download.overview",
-        "delete.overview"
+        "delete.overview",
+        "move.overview"
       ]
     },
     "convert.queue": {
@@ -356,7 +358,7 @@
         "Folders on the server (not on your computer). NAS shares mounted on the server work too.",
         "- **Sources folders**: where the files to convert are. Add as many as you need with **Add a sources folder**; the Sources panel shows one at a time and can't go above it. Removing a folder from the list deletes nothing. Their order, changed with the arrows, is the order of the folder lists everywhere; the first one opens first.",
         "- **Name** (optional) on a sources folder: a friendly name such as “Downloads”, shown instead of the path in the Sources panel, the folder lists and the Quality view. Each name can be used once, up to 40 characters; an empty name shows the folder’s own name.",
-        "- **Protect** on a sources folder: stops its files and folders being deleted or renamed from the app, for example the folder a download client is still seeding from. In the Sources panel such a folder shows **Protected** instead of the Delete button, and the server refuses deletes and renames there too.",
+        "- **Protect** on a sources folder: stops its files and folders being deleted, moved or renamed from the app, for example the folder a download client is still seeding from. In the Sources panel such a folder shows **Protected** instead of the Delete and Move buttons, and the server refuses deletes, moves and renames there too.",
         "- **Target folder**: where converted files are written. The Rename and Merge views work only here.",
         "All must exist. The target cannot be inside a sources folder, and a sources folder cannot be inside another one. In Docker they must be inside the folder mounted into the container (`MEDIA_DIR`, usually `/mnt`).",
         "The output layouts **Source folder name**, **Show and season folders** and **Full source path** are worked out from the sources folder each file is in."
@@ -820,6 +822,29 @@
       ],
       "see": [
         "convert.sources",
+        "move.overview",
+        "settings.folders"
+      ]
+    },
+    "move.overview": {
+      "title": "Moving source files",
+      "body": [
+        "Puts files or folders from a sources folder into another folder on the server: a sub-folder, another sources folder, or the target folder.",
+        "1. In **Convert**, tick the files or folders in [Sources](#convert.sources).",
+        "1. Press **Move** and choose the destination: the buttons at the top switch between the sources folders and the target folder, and you open sub-folders to go deeper. Press **Move here**.",
+        "1. The confirmation shows exactly what will be moved, and where. Press **Move** to confirm.",
+        "A video’s [subtitle files](#subtitles.overview) go with it and keep their place next to it (in a `Subs` folder too); the confirmation lists them.",
+        "Nothing is overwritten: a name already taken in the destination is refused. Between different disks or NAS shares the files are copied and then removed from where they were, which can take a while for big files; a copy that fails leaves the original where it was.",
+        "The app knows files by where they are: a moved file no longer shows its **Converted** badge. If a download client such as Deluge is still seeding the files, it will report them as missing.",
+        "### What is refused",
+        "- Files that are queued, converting or paused, and folders that contain one. Remove them from the queue first.",
+        "- Anything in a sources folder marked **Protect** in [Settings](#settings.folders), and a sources folder itself.",
+        "- A file already in the chosen folder, and a folder into itself or one of its sub-folders.",
+        "- Anything in the target folder: converted files are not moved from here."
+      ],
+      "see": [
+        "convert.sources",
+        "delete.overview",
         "settings.folders"
       ]
     },

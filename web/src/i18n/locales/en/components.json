@@ -65,6 +65,21 @@
     "deleted_one": "Deleted {count} item",
     "deleted_other": "Deleted {count} items"
   },
+  "move": {
+    "notMoved": "Not moved:",
+    "notMovedList": "Not moved: {list}",
+    "nothingTitle": "Nothing can be moved",
+    "title": "Move on the server?",
+    "summary": "{what} will be moved to {dest}: {files}, {size}.",
+    "note": "Nothing is overwritten. Between different disks or shares the files are copied and then removed, which can take a while for big files.",
+    "move": "Move",
+    "moveItems_one": "Move {count} item",
+    "moveItems_other": "Move {count} items",
+    "moving_one": "Moving {count} item…",
+    "moving_other": "Moving {count} items…",
+    "moved_one": "Moved {count} item",
+    "moved_other": "Moved {count} items"
+  },
   "sort": {
     "label": "Sort by",
     "name": "Name",

@@ -24,7 +24,7 @@
         "Pour retrouver les fichiers anciens ou de mauvaise qualité dans vos dossiers, utilisez **Qualité** : voir [Contrôle de qualité](#quality.overview).",
         "Pour retrouver les fichiers dont le nom ne suit pas vos règles de renommage, utilisez **Noms** : voir [Contrôle des noms](#naming.overview).",
         "Pour convertir sans être présent : une [plage de conversion](#settings.schedule) lance la file d'attente la nuit, les [dossiers surveillés](#settings.watch) ajoutent tout seuls les nouveaux téléchargements, et les [notifications](#settings.notifications) vous disent comment cela s'est passé. **Statistiques** montre ce qui a été converti : voir [Statistiques](#stats.overview).",
-        "Les fichiers sources ne sont jamais modifiés : vos téléchargements peuvent donc continuer à être partagés. Ils ne sont supprimés que sur demande : voir [Supprimer des fichiers sources](#delete.overview).",
+        "Les fichiers sources ne sont jamais modifiés : vos téléchargements peuvent donc continuer à être partagés. Ils ne sont supprimés ou déplacés que sur demande : voir [Supprimer des fichiers sources](#delete.overview) et [Déplacer des fichiers sources](#move.overview).",
         "Sur un téléphone, l'application fonctionne de la même façon : les vues à deux panneaux (Sources et file d'attente, fichiers et liste à renommer…) n'en montrent qu'un à la fois, avec un sélecteur au-dessus ; l'ajout de fichiers passe au second panneau. Le glisser-déposer demande une souris : sur un écran tactile, utilisez les cases à cocher et **Ajouter à la file**, ainsi que les boutons **Monter**, **Descendre**, **Placer en tête** et **Placer en dernier** dans les détails d'une tâche pour réordonner la file.",
         "Paramètres → **À propos** donne la version, les notes de version, les crédits et la licence (GNU GPL, version 2)."
       ],
@@ -54,6 +54,7 @@
         "- **Téléverser** envoie des vidéos de votre ordinateur dans le dossier ouvert ; déposer des fichiers de votre ordinateur sur le panneau fait la même chose. Voir [Téléverser des vidéos](#upload.overview).",
         "- **Télécharger** copie les fichiers ou dossiers sélectionnés sur votre ordinateur : voir [Télécharger des fichiers](#download.overview).",
         "- **Supprimer** retire les fichiers ou dossiers sélectionnés du serveur, après confirmation : voir [Supprimer des fichiers sources](#delete.overview).",
+        "- **Déplacer** met les fichiers ou dossiers sélectionnés dans un autre dossier du serveur (un dossier de sources ou le dossier cible), après confirmation : voir [Déplacer des fichiers sources](#move.overview).",
         "Ajouter des fichiers ne lance jamais la conversion : appuyez sur **Démarrer** quand vous êtes prêt ([pourquoi](#queue.state))."
       ],
       "see": [
@@ -62,7 +63,8 @@
         "queue.state",
         "upload.overview",
         "download.overview",
-        "delete.overview"
+        "delete.overview",
+        "move.overview"
       ]
     },
     "convert.queue": {
@@ -356,7 +358,7 @@
         "Des dossiers sur le serveur (pas sur votre ordinateur). Les partages NAS montés sur le serveur fonctionnent aussi.",
         "- **Dossiers de sources** : l'emplacement des fichiers à convertir. Ajoutez-en autant que nécessaire avec **Ajouter un dossier de sources** ; le panneau Sources en affiche un à la fois et ne peut pas remonter au-dessus. Retirer un dossier de la liste ne supprime rien. Leur ordre, modifié avec les flèches, est partout l’ordre des listes de dossiers ; le premier s’ouvre en premier.",
         "- **Nom** (facultatif) sur un dossier de sources : un nom convivial tel que « Téléchargements », affiché à la place du chemin dans le panneau Sources, les listes de dossiers et la vue Qualité. Chaque nom ne peut servir qu'une fois, 40 caractères au maximum ; un nom vide affiche le nom du dossier lui-même.",
-        "- **Protéger** sur un dossier de sources : empêche la suppression et le renommage de ses fichiers et dossiers depuis l'application, par exemple le dossier dont un client de téléchargement assure encore le partage. Dans le panneau Sources, un tel dossier affiche **Protégé** à la place du bouton Supprimer, et le serveur refuse aussi les suppressions et les renommages à cet endroit.",
+        "- **Protéger** sur un dossier de sources : empêche la suppression, le déplacement et le renommage de ses fichiers et dossiers depuis l'application, par exemple le dossier dont un client de téléchargement assure encore le partage. Dans le panneau Sources, un tel dossier affiche **Protégé** à la place des boutons Supprimer et Déplacer, et le serveur refuse aussi les suppressions, les déplacements et les renommages à cet endroit.",
         "- **Dossier cible** : l'emplacement où les fichiers convertis sont écrits. Les vues Renommer et Fusionner ne travaillent qu'ici.",
         "Tous doivent exister. La cible ne peut pas se trouver dans un dossier de sources, et un dossier de sources ne peut pas se trouver dans un autre. Dans Docker, ils doivent se trouver dans le dossier monté dans le conteneur (`MEDIA_DIR`, généralement `/mnt`).",
         "Les organisations de sortie **Nom du dossier source**, **Dossiers série et saison** et **Chemin source complet** sont calculées à partir du dossier de sources où se trouve chaque fichier."
@@ -820,6 +822,29 @@
       ],
       "see": [
         "convert.sources",
+        "move.overview",
+        "settings.folders"
+      ]
+    },
+    "move.overview": {
+      "title": "Déplacer des fichiers sources",
+      "body": [
+        "Met des fichiers ou dossiers d'un dossier de sources dans un autre dossier du serveur : un sous-dossier, un autre dossier de sources ou le dossier cible.",
+        "1. Dans **Convertir**, cochez les fichiers ou dossiers dans [Sources](#convert.sources).",
+        "1. Cliquez sur **Déplacer** et choisissez la destination : les boutons du haut passent des dossiers de sources au dossier cible, et vous ouvrez les sous-dossiers pour descendre. Cliquez sur **Déplacer ici**.",
+        "1. La confirmation montre exactement ce qui sera déplacé, et où. Cliquez sur **Déplacer** pour confirmer.",
+        "Les [fichiers de sous-titres](#subtitles.overview) d'une vidéo la suivent et gardent leur place à côté d'elle (y compris dans un dossier `Subs`) ; la confirmation les liste.",
+        "Rien n'est écrasé : un nom déjà pris dans la destination est refusé. Entre des disques ou des partages NAS différents, les fichiers sont copiés puis supprimés de leur ancien emplacement, ce qui peut prendre du temps pour les gros fichiers ; une copie qui échoue laisse l'original où il était.",
+        "L'application reconnaît les fichiers à leur emplacement : un fichier déplacé n'affiche plus son badge **Converti**. Si un client de téléchargement comme Deluge partage encore les fichiers, il les signalera comme manquants.",
+        "### Ce qui est refusé",
+        "- Les fichiers en attente, en cours de conversion ou en pause, et les dossiers qui en contiennent un. Retirez-les d'abord de la file d'attente.",
+        "- Tout ce qui se trouve dans un dossier de sources marqué **Protéger** dans les [Paramètres](#settings.folders), et un dossier de sources lui-même.",
+        "- Un fichier déjà dans le dossier choisi, et un dossier dans lui-même ou l'un de ses sous-dossiers.",
+        "- Tout ce qui se trouve dans le dossier cible : les fichiers convertis ne sont pas déplacés d'ici."
+      ],
+      "see": [
+        "convert.sources",
+        "delete.overview",
         "settings.folders"
       ]
     },

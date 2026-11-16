@@ -147,6 +147,15 @@
     "pendingFile": "{name} está en cola o convirtiéndose; quítelo primero de la cola",
     "pendingFiles": "{count} archivos que contiene están en cola o convirtiéndose; quítelos primero de la cola"
   },
+  "move": {
+    "protected": "Los archivos de {root} están protegidos: no se pueden mover (Ajustes → Carpetas)",
+    "sourcesFolder": "Una carpeta de origen en sí no se puede mover",
+    "pendingFile": "{name} está en cola o convirtiéndose; quítelo primero de la cola",
+    "pendingFiles": "{count} archivos que contiene están en cola o convirtiéndose; quítelos primero de la cola",
+    "sameFolder": "{name} ya está en esa carpeta",
+    "intoItself": "La carpeta {name} no se puede mover dentro de sí misma",
+    "exists": "{name} ya existe en la carpeta de destino"
+  },
   "backup": {
     "busy": {
       "conversion": "hay una conversión en curso",

@@ -24,7 +24,7 @@
         "Per trovare file vecchi o di bassa qualità in qualsiasi punto delle tue cartelle, usa **Qualità**: vedi [Controllo qualità](#quality.overview).",
         "Per trovare i file con nomi che non seguono le tue regole di rinomina, usa **Nomi**: vedi [Controllo nomi](#naming.overview).",
         "Per convertire senza essere presenti: una [fascia oraria di conversione](#settings.schedule) esegue la coda di notte, le [cartelle monitorate](#settings.watch) aggiungono da sole i nuovi download e le [notifiche](#settings.notifications) ti dicono com’è andata. **Statistiche** mostra cosa è stato convertito: vedi [Statistiche](#stats.overview).",
-        "I file sorgente non vengono mai modificati, quindi i download possono continuare il seeding. Vengono eliminati solo se lo chiedi tu: vedi [Eliminare i file sorgente](#delete.overview).",
+        "I file sorgente non vengono mai modificati, quindi i download possono continuare il seeding. Vengono eliminati o spostati solo se lo chiedi tu: vedi [Eliminare i file sorgente](#delete.overview) e [Spostare i file sorgente](#move.overview).",
         "Sul telefono l’app funziona allo stesso modo: le viste con due pannelli (Sorgenti e Coda, i file e l’elenco di rinomina…) mostrano un pannello alla volta, con un selettore sopra; aggiungendo file si passa al secondo pannello. Il trascinamento richiede un mouse, quindi su un touch screen usa le caselle di selezione e **Aggiungi alla coda**, e i pulsanti **Su**, **Giù**, **Sposta in cima** e **Sposta in fondo** nei dettagli di un processo per riordinare la coda.",
         "In Impostazioni → **Informazioni** trovi la versione, le note di rilascio, i crediti e la licenza (GNU GPL, versione 2)."
       ],
@@ -54,6 +54,7 @@
         "- **Carica** invia video dal tuo computer nella cartella aperta; trascinare file dal computer sul pannello fa lo stesso. Vedi [Caricare i video](#upload.overview).",
         "- **Scarica** copia sul tuo computer i file o le cartelle selezionati: vedi [Scaricare i file](#download.overview).",
         "- **Elimina** rimuove dal server i file o le cartelle selezionati, dopo una conferma: vedi [Eliminare i file sorgente](#delete.overview).",
+        "- **Sposta** mette i file o le cartelle selezionati in un’altra cartella del server (una cartella sorgenti o la cartella di destinazione), dopo una conferma: vedi [Spostare i file sorgente](#move.overview).",
         "Aggiungere file non avvia mai la conversione: premi **Avvia** quando sei pronto ([perché](#queue.state))."
       ],
       "see": [
@@ -62,7 +63,8 @@
         "queue.state",
         "upload.overview",
         "download.overview",
-        "delete.overview"
+        "delete.overview",
+        "move.overview"
       ]
     },
     "convert.queue": {
@@ -356,7 +358,7 @@
         "Cartelle sul server (non sul tuo computer). Funzionano anche le condivisioni NAS montate sul server.",
         "- **Cartelle sorgenti**: dove si trovano i file da convertire. Aggiungine quante ti servono con **Aggiungi una cartella sorgenti**; il pannello Sorgenti ne mostra una alla volta e non può salire oltre di essa. Rimuovere una cartella dall’elenco non elimina niente. Il loro ordine, che si cambia con le frecce, è l’ordine degli elenchi di cartelle ovunque; la prima si apre per prima.",
         "- **Nome** (facoltativo) di una cartella sorgenti: un nome più semplice come “Downloads”, mostrato al posto del percorso nel pannello Sorgenti, negli elenchi di cartelle e nella vista Qualità. Ogni nome si può usare una sola volta, fino a 40 caratteri; con un nome vuoto viene mostrato il nome della cartella stessa.",
-        "- **Proteggi** su una cartella sorgenti: impedisce che i suoi file e le sue cartelle vengano eliminati o rinominati dall’app, per esempio la cartella da cui un client di download sta ancora facendo il seeding. Nel pannello Sorgenti una cartella così mostra **Protetta** al posto del pulsante Elimina, e anche il server rifiuta lì eliminazioni e rinomine.",
+        "- **Proteggi** su una cartella sorgenti: impedisce che i suoi file e le sue cartelle vengano eliminati, spostati o rinominati dall’app, per esempio la cartella da cui un client di download sta ancora facendo il seeding. Nel pannello Sorgenti una cartella così mostra **Protetta** al posto dei pulsanti Elimina e Sposta, e anche il server rifiuta lì eliminazioni, spostamenti e rinomine.",
         "- **Cartella di destinazione**: dove vengono scritti i file convertiti. Le viste Rinomina e Unisci funzionano solo qui.",
         "Tutte devono esistere. La destinazione non può trovarsi dentro una cartella sorgenti, e una cartella sorgenti non può trovarsi dentro un’altra. In Docker devono trovarsi dentro la cartella montata nel container (`MEDIA_DIR`, di solito `/mnt`).",
         "Le strutture di output **Nome della cartella sorgente**, **Cartelle serie e stagione** e **Percorso completo della sorgente** vengono calcolate a partire dalla cartella sorgenti in cui si trova ciascun file."
@@ -820,6 +822,29 @@
       ],
       "see": [
         "convert.sources",
+        "move.overview",
+        "settings.folders"
+      ]
+    },
+    "move.overview": {
+      "title": "Spostare i file sorgente",
+      "body": [
+        "Mette file o cartelle di una cartella sorgenti in un’altra cartella del server: una sottocartella, un’altra cartella sorgenti o la cartella di destinazione.",
+        "1. In **Converti**, spunta i file o le cartelle in [Sorgenti](#convert.sources).",
+        "1. Premi **Sposta** e scegli la destinazione: i pulsanti in alto passano dalle cartelle sorgenti alla cartella di destinazione, e si aprono le sottocartelle per scendere. Premi **Sposta qui**.",
+        "1. La conferma mostra esattamente cosa verrà spostato, e dove. Premi **Sposta** per confermare.",
+        "I [file di sottotitoli](#subtitles.overview) di un video vanno con lui e restano al loro posto accanto al video (anche in una cartella `Subs`); la conferma li elenca.",
+        "Niente viene sovrascritto: un nome già usato nella destinazione viene rifiutato. Tra dischi o condivisioni NAS diversi i file vengono copiati e poi rimossi da dov’erano, il che può richiedere un po’ di tempo per i file grandi; una copia che non riesce lascia l’originale dov’era.",
+        "L’app riconosce i file da dove si trovano: un file spostato non mostra più il suo badge **Convertito**. Se un client di download come Deluge sta ancora facendo il seeding dei file, li segnalerà come mancanti.",
+        "### Cosa viene rifiutato",
+        "- I file in coda, in conversione o in pausa, e le cartelle che ne contengono uno. Rimuovili prima dalla coda.",
+        "- Qualsiasi cosa in una cartella sorgenti contrassegnata come **Proteggi** in [Impostazioni](#settings.folders), e una cartella sorgenti in sé.",
+        "- Un file che è già nella cartella scelta, e una cartella dentro sé stessa o una delle sue sottocartelle.",
+        "- Qualsiasi cosa nella cartella di destinazione: i file convertiti non si spostano da qui."
+      ],
+      "see": [
+        "convert.sources",
+        "delete.overview",
         "settings.folders"
       ]
     },

@@ -98,6 +98,8 @@ export const api = {
   makeFolder: (parent, name) => post('/api/folders', { parent, name }),
   deletePreview: (paths) => post('/api/files/delete/preview', { paths }),
   deleteFiles: (paths) => post('/api/files/delete', { paths }),
+  movePreview: (paths, dest) => post('/api/files/move/preview', { paths, dest }),
+  moveFiles: (paths, dest) => post('/api/files/move', { paths, dest }),
 
   downloadUrl: (path) => `/api/download?path=${encodeURIComponent(path)}`,
   // Replacing originals in the background (server/src/replace.js)

@@ -65,6 +65,21 @@
     "deleted_one": "{count} élément supprimé",
     "deleted_other": "{count} éléments supprimés"
   },
+  "move": {
+    "notMoved": "Non déplacés :",
+    "notMovedList": "Non déplacés : {list}",
+    "nothingTitle": "Rien ne peut être déplacé",
+    "title": "Déplacer sur le serveur ?",
+    "summary": "{what} sera déplacé vers {dest} : {files}, {size}.",
+    "note": "Rien n'est écrasé. Entre des disques ou des partages différents, les fichiers sont copiés puis supprimés, ce qui peut prendre du temps pour les gros fichiers.",
+    "move": "Déplacer",
+    "moveItems_one": "Déplacer {count} élément",
+    "moveItems_other": "Déplacer {count} éléments",
+    "moving_one": "Déplacement de {count} élément…",
+    "moving_other": "Déplacement de {count} éléments…",
+    "moved_one": "{count} élément déplacé",
+    "moved_other": "{count} éléments déplacés"
+  },
   "sort": {
     "label": "Trier par",
     "name": "Nom",

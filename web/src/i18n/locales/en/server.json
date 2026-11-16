@@ -147,6 +147,15 @@
     "pendingFile": "{name} is queued or converting; remove it from the queue first",
     "pendingFiles": "{count} files inside are queued or converting; remove them from the queue first"
   },
+  "move": {
+    "protected": "Files in {root} are protected: they can't be moved (Settings → Folders)",
+    "sourcesFolder": "A sources folder itself cannot be moved",
+    "pendingFile": "{name} is queued or converting; remove it from the queue first",
+    "pendingFiles": "{count} files inside are queued or converting; remove them from the queue first",
+    "sameFolder": "{name} is already in that folder",
+    "intoItself": "The folder {name} cannot be moved into itself",
+    "exists": "{name} already exists in the destination folder"
+  },
   "backup": {
     "busy": {
       "conversion": "a conversion is running",

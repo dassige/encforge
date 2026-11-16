@@ -147,6 +147,15 @@
     "pendingFile": "{name} wartet oder wird konvertiert; entfernen Sie die Datei zuerst aus der Warteschlange",
     "pendingFiles": "{count} Dateien darin warten oder werden konvertiert; entfernen Sie sie zuerst aus der Warteschlange"
   },
+  "move": {
+    "protected": "Dateien in {root} sind geschützt: Sie können nicht verschoben werden (Einstellungen → Ordner)",
+    "sourcesFolder": "Ein Quellordner selbst kann nicht verschoben werden",
+    "pendingFile": "{name} wartet oder wird konvertiert; entfernen Sie die Datei zuerst aus der Warteschlange",
+    "pendingFiles": "{count} Dateien darin warten oder werden konvertiert; entfernen Sie sie zuerst aus der Warteschlange",
+    "sameFolder": "{name} ist bereits in diesem Ordner",
+    "intoItself": "Der Ordner {name} kann nicht in sich selbst verschoben werden",
+    "exists": "{name} gibt es im Zielordner bereits"
+  },
   "backup": {
     "busy": {
       "conversion": "eine Konvertierung läuft",

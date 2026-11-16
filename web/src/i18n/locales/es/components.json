@@ -65,6 +65,21 @@
     "deleted_one": "Se eliminó {count} elemento",
     "deleted_other": "Se eliminaron {count} elementos"
   },
+  "move": {
+    "notMoved": "No movidos:",
+    "notMovedList": "No movidos: {list}",
+    "nothingTitle": "No se puede mover nada",
+    "title": "¿Mover en el servidor?",
+    "summary": "{what} se moverá a {dest}: {files}, {size}.",
+    "note": "No se sobrescribe nada. Entre discos o recursos compartidos distintos, los archivos se copian y luego se eliminan, lo que puede tardar con archivos grandes.",
+    "move": "Mover",
+    "moveItems_one": "Mover {count} elemento",
+    "moveItems_other": "Mover {count} elementos",
+    "moving_one": "Moviendo {count} elemento…",
+    "moving_other": "Moviendo {count} elementos…",
+    "moved_one": "Se movió {count} elemento",
+    "moved_other": "Se movieron {count} elementos"
+  },
   "sort": {
     "label": "Ordenar por",
     "name": "Nombre",
