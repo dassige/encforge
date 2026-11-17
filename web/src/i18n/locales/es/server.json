@@ -145,7 +145,8 @@
     "protected": "Los archivos de {root} están protegidos contra la eliminación (Ajustes → Carpetas)",
     "sourcesFolder": "Una carpeta de origen en sí no se puede eliminar (quítela en Ajustes)",
     "pendingFile": "{name} está en cola o convirtiéndose; quítelo primero de la cola",
-    "pendingFiles": "{count} archivos que contiene están en cola o convirtiéndose; quítelos primero de la cola"
+    "pendingFiles": "{count} archivos que contiene están en cola o convirtiéndose; quítelos primero de la cola",
+    "moving": "{name} se está moviendo, o está en espera"
   },
   "move": {
     "protected": "Los archivos de {root} están protegidos: no se pueden mover (Ajustes → Carpetas)",
@@ -154,7 +155,10 @@
     "pendingFiles": "{count} archivos que contiene están en cola o convirtiéndose; quítelos primero de la cola",
     "sameFolder": "{name} ya está en esa carpeta",
     "intoItself": "La carpeta {name} no se puede mover dentro de sí misma",
-    "exists": "{name} ya existe en la carpeta de destino"
+    "exists": "{name} ya existe en la carpeta de destino",
+    "moving": "{name} se está moviendo, o está en espera",
+    "gone": "{name} ya no existe",
+    "videoNotMoved": "{name} no se movió, así que su archivo de subtítulos se queda con él"
   },
   "backup": {
     "busy": {

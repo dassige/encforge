@@ -145,7 +145,8 @@
     "protected": "Les fichiers de {root} sont protégés contre la suppression (Paramètres → Dossiers)",
     "sourcesFolder": "Un dossier de sources lui-même ne peut pas être supprimé (retirez-le plutôt dans les Paramètres)",
     "pendingFile": "{name} est en attente ou en conversion ; retirez-le d'abord de la file d'attente",
-    "pendingFiles": "{count} fichiers à l'intérieur sont en attente ou en conversion ; retirez-les d'abord de la file d'attente"
+    "pendingFiles": "{count} fichiers à l'intérieur sont en attente ou en conversion ; retirez-les d'abord de la file d'attente",
+    "moving": "{name} est en cours de déplacement, ou en attente"
   },
   "move": {
     "protected": "Les fichiers de {root} sont protégés : ils ne peuvent pas être déplacés (Paramètres → Dossiers)",
@@ -154,7 +155,10 @@
     "pendingFiles": "{count} fichiers à l'intérieur sont en attente ou en conversion ; retirez-les d'abord de la file d'attente",
     "sameFolder": "{name} est déjà dans ce dossier",
     "intoItself": "Le dossier {name} ne peut pas être déplacé dans lui-même",
-    "exists": "{name} existe déjà dans le dossier de destination"
+    "exists": "{name} existe déjà dans le dossier de destination",
+    "moving": "{name} est en cours de déplacement, ou en attente",
+    "gone": "{name} n'existe plus",
+    "videoNotMoved": "{name} n'a pas été déplacé, son fichier de sous-titres reste donc avec lui"
   },
   "backup": {
     "busy": {

@@ -445,6 +445,7 @@ export default function App({ auth, onAuthChange }) {
           help="convert.sources"
           sortId="convert"
           allowDelete
+          move={data.move}
           onNotice={onNotice}
           onUpload={(dir, root, files) => setUpload({ dir, root, files })}
           onWatch={watchFolder}

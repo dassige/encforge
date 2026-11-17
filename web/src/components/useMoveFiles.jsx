@@ -25,8 +25,8 @@ function Blocked({ list }) {
 }
 
 /**
- * Returns move(paths, dest): shows exactly what would be moved into dest, asks, then moves.
- * Resolves to true when something was moved.
+ * Returns move(paths, dest): shows exactly what would be moved into dest, asks, then hands the
+ * moves to the server, which does them in the background. Resolves to true when some were started.
  */
 export function useMoveFiles({ onError, onNotice }) {
   const dialogs = useDialogs();
@@ -84,14 +84,18 @@ export function useMoveFiles({ onError, onNotice }) {
         ],
       });
       if (!ok) return false;
-      onNotice?.(t('components.move.moving', { count: items.length }));
       try {
-        // Subtitle files are found again by the server, and go with their video.
-        const r = await api.moveFiles(items.filter((i) => !i.sidecarOf).map((i) => i.path), preview.dest);
-        if (r.moved.length) onNotice?.(t('components.move.moved', { count: r.moved.length }));
-        const problems = [...r.blocked.map((b) => `${fileName(b.path)} (${moveReason(b)})`), ...r.errors.map((e) => `${fileName(e.path)} (${e.reason})`)];
-        if (problems.length) onError?.(new Error(t('components.move.notMovedList', { list: problems.join('; ') })));
-        return r.moved.length > 0;
+        // Subtitle files are found again by the server, and go with their video. The moves run
+        // in the background: the bar at the top of Sources (MoveProgress) shows how far they are.
+        const chosen = items.filter((i) => !i.sidecarOf).map((i) => i.path);
+        const r = await api.moveFiles(chosen, preview.dest);
+        // What was refused now (e.g. the name got taken meanwhile) is in blocked.
+        const added = r.move ? Math.max(0, chosen.length - r.blocked.length) : 0;
+        if (added) onNotice?.(t('components.move.started', { count: added }));
+        if (r.blocked.length) {
+          onError?.(new Error(t('components.move.notMovedList', { list: r.blocked.map((b) => `${fileName(b.path)} (${moveReason(b)})`).join('; ') })));
+        }
+        return added > 0;
       } catch (e) {
         onError?.(e);
         return false;

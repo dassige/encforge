@@ -835,6 +835,7 @@
         "1. La confirmación muestra exactamente qué se moverá, y adónde. Pulse **Mover** para confirmar.",
         "Los [archivos de subtítulos](#subtitles.overview) de un vídeo van con él y mantienen su lugar junto al vídeo (también en una carpeta `Subs`); la confirmación los enumera.",
         "No se sobrescribe nada: un nombre que ya existe en el destino se rechaza. Entre discos o recursos compartidos NAS distintos, los archivos se copian y luego se eliminan de donde estaban, lo que puede tardar con archivos grandes; una copia que falla deja el original donde estaba.",
+        "Los movimientos se hacen en el servidor en segundo plano, incluso con la página cerrada. Una barra en la parte superior de Orígenes muestra qué elemento se está moviendo y cuánto se ha hecho; los movimientos que inicie mientras tanto se suman a la lista. **Cancelar** detiene la copia en curso (ese archivo se queda donde estaba) y omite el resto; lo ya movido sigue movido. Al terminar, la barra muestra cuántos elementos se movieron y por qué fallaron otros, hasta que la cierre.",
         "La aplicación reconoce los archivos por su ubicación: un archivo movido ya no muestra su insignia **Convertido**. Si un cliente de descargas como Deluge sigue compartiendo los archivos, los indicará como no encontrados.",
         "### Qué se rechaza",
         "- Los archivos que están en cola, convirtiéndose o en pausa, y las carpetas que contienen alguno. Quítelos antes de la cola.",

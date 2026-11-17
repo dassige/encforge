@@ -145,7 +145,8 @@
     "protected": "Dateien in {root} sind vor dem Löschen geschützt (Einstellungen → Ordner)",
     "sourcesFolder": "Ein Quellordner selbst kann nicht gelöscht werden (entfernen Sie ihn stattdessen in den Einstellungen)",
     "pendingFile": "{name} wartet oder wird konvertiert; entfernen Sie die Datei zuerst aus der Warteschlange",
-    "pendingFiles": "{count} Dateien darin warten oder werden konvertiert; entfernen Sie sie zuerst aus der Warteschlange"
+    "pendingFiles": "{count} Dateien darin warten oder werden konvertiert; entfernen Sie sie zuerst aus der Warteschlange",
+    "moving": "{name} wird verschoben oder wartet darauf"
   },
   "move": {
     "protected": "Dateien in {root} sind geschützt: Sie können nicht verschoben werden (Einstellungen → Ordner)",
@@ -154,7 +155,10 @@
     "pendingFiles": "{count} Dateien darin warten oder werden konvertiert; entfernen Sie sie zuerst aus der Warteschlange",
     "sameFolder": "{name} ist bereits in diesem Ordner",
     "intoItself": "Der Ordner {name} kann nicht in sich selbst verschoben werden",
-    "exists": "{name} gibt es im Zielordner bereits"
+    "exists": "{name} gibt es im Zielordner bereits",
+    "moving": "{name} wird verschoben oder wartet darauf",
+    "gone": "{name} gibt es nicht mehr",
+    "videoNotMoved": "{name} wurde nicht verschoben, daher bleibt seine Untertiteldatei bei ihm"
   },
   "backup": {
     "busy": {

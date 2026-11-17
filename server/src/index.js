@@ -18,6 +18,7 @@ import { registerMergeRoutes } from './mergeRoutes.js';
 import { registerRenameRoutes } from './rename/routes.js';
 import { Uploads } from './upload.js';
 import { SourceFiles } from './deleteFiles.js';
+import { Mover } from './moveFiles.js';
 import { registerUploadRoutes } from './uploadRoutes.js';
 import { QualityScanner } from './quality.js';
 import { registerQualityRoutes } from './qualityRoutes.js';
@@ -87,6 +88,7 @@ const merger = new Merger({
 const uploads = new Uploads({ db, settings, events, log: app.log });
 const replacer = new Replacer({ db, settings, queue, subtitles, events, log: app.log });
 const sourceFiles = new SourceFiles({ settings, queue, events, log: app.log, subtitles });
+const mover = new Mover({ sourceFiles, settings, queue, events, log: app.log });
 const media = new Media({ settings, verifier, ffmpeg: config.ffmpeg, log: app.log });
 const downloads = new Downloads({ settings, log: app.log, subtitles });
 const quality = new QualityScanner({ db, settings, verifier, events, queue, log: app.log });
@@ -118,7 +120,7 @@ await app.register(
     registerAutomationRoutes(api, { history, watcher, notifier });
     registerRenameRoutes(api, { renamer, naming });
     registerMergeRoutes(api, { merger });
-    registerUploadRoutes(api, { uploads, sourceFiles });
+    registerUploadRoutes(api, { uploads, sourceFiles, mover });
     registerQualityRoutes(api, { quality });
     registerDownloadRoutes(api, { downloads });
     registerMediaRoutes(api, { media });

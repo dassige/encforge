@@ -1,7 +1,7 @@
 import { MAX_CHUNK } from './upload.js';
 
 /** Changes to the sources folders: uploads, new folders, deleting and moving. */
-export function registerUploadRoutes(app, { uploads, sourceFiles }) {
+export function registerUploadRoutes(app, { uploads, sourceFiles, mover }) {
   // Upload chunks arrive as raw bytes; the handler streams them to disk.
   app.addContentTypeParser('application/octet-stream', (req, payload, done) => done(null, payload));
 
@@ -14,7 +14,13 @@ export function registerUploadRoutes(app, { uploads, sourceFiles }) {
   // { paths } -> what would be deleted, for the confirmation; then the real thing.
   app.post('/api/files/delete/preview', async (req) => sourceFiles.preview(req.body ?? {}));
   app.post('/api/files/delete', async (req) => sourceFiles.remove(req.body ?? {}));
-  // { paths, dest } -> what would be moved where; then the real thing.
-  app.post('/api/files/move/preview', async (req) => sourceFiles.previewMove(req.body ?? {}));
-  app.post('/api/files/move', async (req) => sourceFiles.move(req.body ?? {}));
+  // { paths, dest } -> what would be moved where; then the moves start in the background.
+  app.post('/api/files/move/preview', async (req) => mover.previewMove(req.body ?? {}));
+  app.get('/api/files/move', async () => mover.state());
+  app.post('/api/files/move', async (req) => mover.start(req.body ?? {}));
+  app.post('/api/files/move/cancel', async () => mover.cancel());
+  app.delete('/api/files/move', async () => {
+    mover.clear();
+    return { ok: true };
+  });
 }

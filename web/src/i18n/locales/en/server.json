@@ -145,7 +145,8 @@
     "protected": "Files in {root} are protected from deletion (Settings → Folders)",
     "sourcesFolder": "A sources folder itself cannot be deleted (remove it in Settings instead)",
     "pendingFile": "{name} is queued or converting; remove it from the queue first",
-    "pendingFiles": "{count} files inside are queued or converting; remove them from the queue first"
+    "pendingFiles": "{count} files inside are queued or converting; remove them from the queue first",
+    "moving": "{name} is being moved, or waiting to be"
   },
   "move": {
     "protected": "Files in {root} are protected: they can't be moved (Settings → Folders)",
@@ -154,7 +155,10 @@
     "pendingFiles": "{count} files inside are queued or converting; remove them from the queue first",
     "sameFolder": "{name} is already in that folder",
     "intoItself": "The folder {name} cannot be moved into itself",
-    "exists": "{name} already exists in the destination folder"
+    "exists": "{name} already exists in the destination folder",
+    "moving": "{name} is being moved, or waiting to be",
+    "gone": "{name} no longer exists",
+    "videoNotMoved": "{name} was not moved, so its subtitle file stays with it"
   },
   "backup": {
     "busy": {

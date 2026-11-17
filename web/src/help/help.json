@@ -835,6 +835,7 @@
         "1. The confirmation shows exactly what will be moved, and where. Press **Move** to confirm.",
         "A video’s [subtitle files](#subtitles.overview) go with it and keep their place next to it (in a `Subs` folder too); the confirmation lists them.",
         "Nothing is overwritten: a name already taken in the destination is refused. Between different disks or NAS shares the files are copied and then removed from where they were, which can take a while for big files; a copy that fails leaves the original where it was.",
+        "The moves run on the server in the background, also with the page closed. A bar at the top of Sources shows which item is being moved and how much is done; moves you start meanwhile join the list. **Cancel** stops the copy in progress (that file stays where it was) and skips the rest; what was moved already stays moved. When it is done, the bar shows how many items were moved and why any failed, until you dismiss it.",
         "The app knows files by where they are: a moved file no longer shows its **Converted** badge. If a download client such as Deluge is still seeding the files, it will report them as missing.",
         "### What is refused",
         "- Files that are queued, converting or paused, and folders that contain one. Remove them from the queue first.",

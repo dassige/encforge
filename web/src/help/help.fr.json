@@ -835,6 +835,7 @@
         "1. La confirmation montre exactement ce qui sera déplacé, et où. Cliquez sur **Déplacer** pour confirmer.",
         "Les [fichiers de sous-titres](#subtitles.overview) d'une vidéo la suivent et gardent leur place à côté d'elle (y compris dans un dossier `Subs`) ; la confirmation les liste.",
         "Rien n'est écrasé : un nom déjà pris dans la destination est refusé. Entre des disques ou des partages NAS différents, les fichiers sont copiés puis supprimés de leur ancien emplacement, ce qui peut prendre du temps pour les gros fichiers ; une copie qui échoue laisse l'original où il était.",
+        "Les déplacements se font sur le serveur en arrière-plan, même page fermée. Une barre en haut de Sources montre l'élément en cours de déplacement et l'avancement ; les déplacements lancés entre-temps rejoignent la liste. **Annuler** arrête la copie en cours (ce fichier reste où il était) et saute le reste ; ce qui a déjà été déplacé le reste. À la fin, la barre indique combien d'éléments ont été déplacés et pourquoi certains ont échoué, jusqu'à ce que vous la fermiez.",
         "L'application reconnaît les fichiers à leur emplacement : un fichier déplacé n'affiche plus son badge **Converti**. Si un client de téléchargement comme Deluge partage encore les fichiers, il les signalera comme manquants.",
         "### Ce qui est refusé",
         "- Les fichiers en attente, en cours de conversion ou en pause, et les dossiers qui en contiennent un. Retirez-les d'abord de la file d'attente.",

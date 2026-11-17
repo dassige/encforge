@@ -51,9 +51,10 @@ export const partName = (to) => path.join(path.dirname(to), `.${path.basename(to
  * Moves a file, also between disks or shares: rename, or a copy of its bytes (under a hidden
  * name, then renamed) when rename cannot cross. A `to` that is already a hidden part name is
  * copied to directly. keepSource: after a copy, leave the source for the caller to remove.
- * onProgress(bytes): during a copy. Returns { copied }.
+ * onProgress(bytes): during a copy. signal: stops a copy (the partial copy is removed and the
+ * source kept). Returns { copied }.
  */
-export async function moveFile(from, to, { keepSource = false, rename = fs.rename, onProgress = null } = {}) {
+export async function moveFile(from, to, { keepSource = false, rename = fs.rename, onProgress = null, signal = null } = {}) {
   try {
     await rename(from, to);
     return { copied: false };
@@ -62,7 +63,7 @@ export async function moveFile(from, to, { keepSource = false, rename = fs.renam
   }
   const part = to.endsWith(PART) ? to : partName(to);
   try {
-    await copyBytes(from, part, onProgress);
+    await copyBytes(from, part, onProgress, signal);
     if (part !== to) await fs.rename(part, to);
   } catch (err) {
     await fs.rm(part, { force: true }).catch(() => {});

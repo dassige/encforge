@@ -99,7 +99,11 @@ export const api = {
   deletePreview: (paths) => post('/api/files/delete/preview', { paths }),
   deleteFiles: (paths) => post('/api/files/delete', { paths }),
   movePreview: (paths, dest) => post('/api/files/move/preview', { paths, dest }),
+  // Starts the moves in the background: { blocked, move } (server/src/moveFiles.js).
   moveFiles: (paths, dest) => post('/api/files/move', { paths, dest }),
+  moveState: () => get('/api/files/move'),
+  cancelMove: () => post('/api/files/move/cancel'),
+  clearMove: () => request('DELETE', '/api/files/move'),
 
   downloadUrl: (path) => `/api/download?path=${encodeURIComponent(path)}`,
   // Replacing originals in the background (server/src/replace.js)

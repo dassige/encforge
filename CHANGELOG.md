@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.8] - 2026/11/18
+
+- feat: Move files in the background, with progress and Cancel
+
+Moving files from the Sources panel now hands them to the server,
+which moves them one at a time in the background, also with the page
+closed or reloaded. A bar at the top of Sources shows which item is
+being moved ("Moving 2 of 4"), the file, and how much is done; moves
+started meanwhile join the list. Cancel asks first, then stops the
+copy in progress (that file stays where it was, with no partial copy
+left) and skips the rest; what was moved already stays moved. When it
+ends, the bar shows how many items were moved, cancelled or failed,
+with the reasons, until dismissed. Files waiting to be moved can't be
+deleted or moved again, each item is checked again just before it is
+moved, and a subtitle file is only moved with its video. POST
+/api/files/move now answers at once with { blocked, move }; new
+endpoints: GET /api/files/move, POST /api/files/move/cancel and
+DELETE /api/files/move; progress also comes as "move" events. The
+help and the API docs describe it in every language.
+
 ## [4.3.7] - 2026/11/17
 
 - fix: The Sources panel's buttons overflowed a narrow panel

@@ -34,6 +34,8 @@ export function useLiveData(onError, onNotice, onEvent) {
   const [backupSchedule, setBackupSchedule] = useState(null);
   // Originals being replaced in the background (server/src/replace.js).
   const [replace, setReplace] = useState(null);
+  // Files being moved in the background (server/src/moveFiles.js).
+  const [move, setMove] = useState(null);
 
   const loadJobs = useCallback(async () => {
     try {
@@ -52,6 +54,7 @@ export function useLiveData(onError, onNotice, onEvent) {
   const loadSettings = useCallback(() => api.settings().then(setSettings, (e) => errRef.current?.(e)), []);
   const loadInfo = useCallback(() => api.info().then(setInfo, () => {}), []);
   const loadReplace = useCallback(() => api.replaceState().then(setReplace, () => {}), []);
+  const loadMove = useCallback(() => api.moveState().then(setMove, () => {}), []);
 
   useEffect(() => {
     let tickTimer;
@@ -69,6 +72,7 @@ export function useLiveData(onError, onNotice, onEvent) {
       loadSettings();
       loadInfo();
       loadReplace();
+      loadMove();
     };
     loadAll();
 
@@ -164,6 +168,7 @@ export function useLiveData(onError, onNotice, onEvent) {
     es.addEventListener('watch', (e) => setWatch(JSON.parse(e.data)));
     es.addEventListener('backupSchedule', (e) => setBackupSchedule(JSON.parse(e.data)));
     es.addEventListener('replace', (e) => setReplace(JSON.parse(e.data)));
+    es.addEventListener('move', (e) => setMove(JSON.parse(e.data)));
     es.addEventListener('settings', (e) => {
       setSettings(JSON.parse(e.data));
       bump();
@@ -172,10 +177,10 @@ export function useLiveData(onError, onNotice, onEvent) {
       es.close();
       clearTimeout(tickTimer);
     };
-  }, [loadJobs, loadPresets, loadRenameRules, loadMerges, loadQualityScans, loadNamingChecks, loadSettings, loadInfo, loadReplace]);
+  }, [loadJobs, loadPresets, loadRenameRules, loadMerges, loadQualityScans, loadNamingChecks, loadSettings, loadInfo, loadReplace, loadMove]);
 
   return {
-    jobs, queue, presets, renameRules, merges, qualityScans, qualityTick, namingChecks, namingTick, settings, info, connected, changeTick, watch, backupSchedule, replace,
+    jobs, queue, presets, renameRules, merges, qualityScans, qualityTick, namingChecks, namingTick, settings, info, connected, changeTick, watch, backupSchedule, replace, move,
     reloadJobs: loadJobs, reloadPresets: loadPresets, setSettings,
   };
 }

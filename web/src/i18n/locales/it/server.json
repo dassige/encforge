@@ -145,7 +145,8 @@
     "protected": "I file in {root} sono protetti dall’eliminazione (Impostazioni → Cartelle)",
     "sourcesFolder": "Una cartella sorgenti non può essere eliminata (rimuovila invece nelle Impostazioni)",
     "pendingFile": "{name} è in coda o in conversione; prima rimuovilo dalla coda",
-    "pendingFiles": "{count} file contenuti sono in coda o in conversione; prima rimuovili dalla coda"
+    "pendingFiles": "{count} file contenuti sono in coda o in conversione; prima rimuovili dalla coda",
+    "moving": "{name} è in spostamento, o in attesa di esserlo"
   },
   "move": {
     "protected": "I file in {root} sono protetti: non si possono spostare (Impostazioni → Cartelle)",
@@ -154,7 +155,10 @@
     "pendingFiles": "{count} file contenuti sono in coda o in conversione; prima rimuovili dalla coda",
     "sameFolder": "{name} è già in quella cartella",
     "intoItself": "La cartella {name} non può essere spostata dentro sé stessa",
-    "exists": "{name} esiste già nella cartella di destinazione"
+    "exists": "{name} esiste già nella cartella di destinazione",
+    "moving": "{name} è in spostamento, o in attesa di esserlo",
+    "gone": "{name} non esiste più",
+    "videoNotMoved": "{name} non è stato spostato, quindi il suo file di sottotitoli resta con lui"
   },
   "backup": {
     "busy": {

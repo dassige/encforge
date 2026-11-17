@@ -10,6 +10,7 @@ import { downloadTitle, useDownload } from '../download/useDownload.jsx';
 import { useDeleteFiles } from './useDeleteFiles.jsx';
 import { useMoveFiles } from './useMoveFiles.jsx';
 import { FolderPicker } from './FolderPicker.jsx';
+import { MoveProgress } from './MoveProgress.jsx';
 import { t } from '../i18n/index.js';
 import { sortList, useRememberedSort } from '../sort.js';
 import { SortControl } from './SortControl.jsx';
@@ -63,10 +64,11 @@ export function browserRoots(settings, kind) {
  * the computer and shows an Upload button: onUpload(dir, root, files).
  * addLabel is the add button's text; addTitle the tooltip of a file row ("Double-click or drag to …").
  * sortId names the feature (convert, quality, rename, merge): each remembers its own sort.
+ * move: the files being moved in the background (useLiveData), shown at the top with a progress bar.
  */
 export function SourceBrowser({
   settings, changeTick, onAdd, onError, root = 'source', title = t('sources.title'), addLabel, addTitle,
-  hint = t('sources.hint'), help, onUpload, allowDelete, onNotice, onWatch, onRenameFile, sortId = root,
+  hint = t('sources.hint'), help, onUpload, allowDelete, onNotice, onWatch, onRenameFile, sortId = root, move = null,
 }) {
   const player = usePlayer();
   const addText = addLabel ?? t('sources.addLabel');
@@ -81,9 +83,8 @@ export function SourceBrowser({
   const download = useDownload(onError);
   const removeFiles = useDeleteFiles({ onError, onNotice });
   const moveFiles = useMoveFiles({ onError, onNotice });
-  // The paths being moved while the destination is chosen; moving: the move is running.
+  // The paths to move while the destination is chosen.
   const [moveFrom, setMoveFrom] = useState(null);
-  const [moving, setMoving] = useState(false);
   const roots = browserRoots(settings, root);
   const rootsKey = roots.join('|');
   const [chosenRoot, setChosenRoot] = useState(() => readStore(storeKey(root)));
@@ -178,13 +179,8 @@ export function SourceBrowser({
   async function moveTo(dest) {
     const paths = moveFrom;
     setMoveFrom(null);
-    setMoving(true);
-    try {
-      if (await moveFiles(paths, dest)) setSelected(new Set());
-    } finally {
-      setMoving(false);
-      load(dir, { keepSelection: true });
-    }
+    // The list reloads as each item is moved (the `files` events bump changeTick).
+    if (await moveFiles(paths, dest)) setSelected(new Set());
   }
 
   const allSelected = items.length > 0 && items.every((i) => selected.has(i.path));
@@ -244,6 +240,8 @@ export function SourceBrowser({
           </button>
         </div>
       </div>
+
+      <MoveProgress move={move} onError={onError} />
 
       <nav className="crumbs" aria-label={t('sources.crumbs')}>
         {listing?.parent && (
@@ -307,12 +305,12 @@ export function SourceBrowser({
           {allowDelete && !isProtected && (
             <button
               className="btn ghost small"
-              disabled={!selected.size || moving}
+              disabled={!selected.size}
               title={t('sources.moveTitle')}
               aria-label={t('common.move')}
               onClick={() => setMoveFrom([...selected])}
             >
-              <FolderInput size={14} className={moving ? 'spin' : ''} /> <span className="btn-label">{t('common.move')}</span>
+              <FolderInput size={14} /> <span className="btn-label">{t('common.move')}</span>
             </button>
           )}
           {allowDelete && isProtected && (

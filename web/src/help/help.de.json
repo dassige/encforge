@@ -835,6 +835,7 @@
         "1. Die Bestätigung zeigt genau, was wohin verschoben wird. Klicken Sie zum Bestätigen auf **Verschieben**.",
         "Die [Untertiteldateien](#subtitles.overview) eines Videos gehen mit und behalten ihren Platz neben dem Video (auch in einem `Subs`-Ordner); die Bestätigung listet sie auf.",
         "Nichts wird überschrieben: Ein Name, den es im Ziel schon gibt, wird abgelehnt. Zwischen verschiedenen Datenträgern oder NAS-Freigaben werden die Dateien kopiert und danach an ihrem alten Ort entfernt; bei großen Dateien kann das dauern. Schlägt eine Kopie fehl, bleibt das Original, wo es war.",
+        "Das Verschieben läuft auf dem Server im Hintergrund, auch bei geschlossener Seite. Ein Balken oben in „Quellen“ zeigt, welches Element gerade verschoben wird und wie viel erledigt ist; inzwischen gestartete Verschiebungen kommen in dieselbe Liste. **Abbrechen** beendet die laufende Kopie (diese Datei bleibt, wo sie war) und überspringt den Rest; bereits Verschobenes bleibt verschoben. Danach zeigt der Balken, wie viele Elemente verschoben wurden und warum etwas fehlschlug, bis Sie ihn schließen.",
         "Die App erkennt Dateien an ihrem Ort: Eine verschobene Datei zeigt ihr Abzeichen **Konvertiert** nicht mehr. Wenn ein Download-Client wie Deluge die Dateien noch seedet, meldet er sie als fehlend.",
         "### Was abgelehnt wird",
         "- Dateien, die in der Warteschlange stehen, konvertiert werden oder angehalten sind, und Ordner, die eine enthalten. Entfernen Sie sie zuerst aus der Warteschlange.",

@@ -835,6 +835,7 @@
         "1. La conferma mostra esattamente cosa verrà spostato, e dove. Premi **Sposta** per confermare.",
         "I [file di sottotitoli](#subtitles.overview) di un video vanno con lui e restano al loro posto accanto al video (anche in una cartella `Subs`); la conferma li elenca.",
         "Niente viene sovrascritto: un nome già usato nella destinazione viene rifiutato. Tra dischi o condivisioni NAS diversi i file vengono copiati e poi rimossi da dov’erano, il che può richiedere un po’ di tempo per i file grandi; una copia che non riesce lascia l’originale dov’era.",
+        "Gli spostamenti avvengono sul server in background, anche a pagina chiusa. Una barra in cima a Sorgenti mostra quale elemento si sta spostando e quanto è fatto; gli spostamenti avviati nel frattempo si aggiungono all’elenco. **Annulla** interrompe la copia in corso (quel file resta dov’era) e salta il resto; ciò che è già stato spostato resta spostato. Alla fine la barra mostra quanti elementi sono stati spostati e perché alcuni non sono riusciti, finché non la chiudi.",
         "L’app riconosce i file da dove si trovano: un file spostato non mostra più il suo badge **Convertito**. Se un client di download come Deluge sta ancora facendo il seeding dei file, li segnalerà come mancanti.",
         "### Cosa viene rifiutato",
         "- I file in coda, in conversione o in pausa, e le cartelle che ne contengono uno. Rimuovili prima dalla coda.",

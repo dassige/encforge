@@ -86,8 +86,45 @@ export const schemas = [
     properties: {
       path: { type: 'string' },
       reason: { type: 'string', description: 'Why, in English.' },
-      code: { type: 'string', description: 'protected, sourcesFolder, pendingFile or pendingFiles; when moving also sameFolder, intoItself or exists. Absent when the path is outside the sources folders or does not exist.' },
+      code: { type: 'string', description: 'protected, sourcesFolder, pendingFile, pendingFiles or moving (being moved, or waiting to be); when moving also sameFolder, intoItself or exists. Absent when the path is outside the sources folders or does not exist.' },
       params: { type: 'object', description: 'Values for wording the reason (root, name, count).' },
+    },
+  },
+  {
+    $id: 'MoveBatch',
+    type: 'object',
+    description: 'The files and folders being moved in the background, and the summary once done.',
+    properties: {
+      running: { type: 'boolean', description: 'Moves are being worked through.' },
+      cancelling: { type: 'boolean', description: 'Cancel was pressed; the copy in progress is being stopped.' },
+      startedAt: { type: 'integer', description: 'ms since 1970.' },
+      finishedAt: { type: ['integer', 'null'], description: 'ms since 1970; null while running.' },
+      bytes: { type: 'integer', description: 'Size of every item in the list.' },
+      doneBytes: { type: 'integer', description: 'Size of the items finished (moved or not), plus what the copy in progress has copied.' },
+      items: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            path: { type: 'string' },
+            to: { type: 'string', description: 'Where it goes.' },
+            name: { type: 'string' },
+            type: { type: 'string', enum: ['file', 'dir'] },
+            files: { type: 'integer' },
+            bytes: { type: 'integer' },
+            sidecarOf: { type: ['string', 'null'], description: 'For a subtitle file that goes with a video: that video.' },
+            status: { type: 'string', enum: ['waiting', 'moving', 'done', 'failed', 'cancelled'] },
+            error: { type: ['string', 'null'], description: 'Why it failed, in English.' },
+            code: { type: ['string', 'null'], description: 'gone, pendingFile, exists or videoNotMoved; null for other errors.' },
+            params: { type: ['object', 'null'], description: 'Values for wording the error (name).' },
+          },
+        },
+      },
+      current: {
+        type: ['object', 'null'],
+        description: 'The item being moved: bytes copied so far (stays 0 for a move on one disk, which is instant).',
+        properties: { path: { type: 'string' }, done: { type: 'integer' } },
+      },
     },
   },
 ];
@@ -331,11 +368,18 @@ export const paths = {
       400: { description: 'No paths, more than 1000, or the destination is not a folder under the configured folders.', $ref: 'Error#' },
     },
   },
+  'GET /api/files/move': {
+    operationId: 'getMoveProgress',
+    tags: ['Folders'],
+    summary: 'Files and folders being moved',
+    description: 'The list of moves started with `POST /api/files/move`: each item’s status and, for the one being moved, how far the copy is. Also sent as `move` events on `/api/events`. null when there is none.',
+    response: { 200: { oneOf: [{ $ref: 'MoveBatch#' }, { type: 'null' }] } },
+  },
   'POST /api/files/move': {
     operationId: 'moveFiles',
     tags: ['Folders'],
-    summary: 'Move files and folders',
-    description: 'Moves into `dest` what `POST /api/files/move/preview` says can go, checking everything again first. Between disks or shares a file is copied (under a hidden name until complete) and the original removed afterwards, so this can take a while for big files; a failed copy leaves the original where it was. What is refused comes back in `blocked`; a failure on one item is in `errors` and does not stop the others.',
+    summary: 'Move files and folders in the background',
+    description: 'Checks the chosen items like `POST /api/files/move/preview` and adds what can go to the list of moves, then answers at once: the server works through the list one item at a time, also with no browser open. Moves added while it runs join the list. Between disks or shares a file is copied (under a hidden name until complete) and the original removed afterwards, so this can take a while for big files; a failed or cancelled copy leaves the original where it was. Each item is checked again just before it is moved; a failure on one item does not stop the others. A subtitle file is not moved when its video was not.',
     body: {
       type: 'object',
       properties: {
@@ -348,17 +392,27 @@ export const paths = {
       200: {
         type: 'object',
         properties: {
-          moved: {
-            type: 'array',
-            items: { type: 'object', properties: { from: { type: 'string' }, to: { type: 'string' } } },
-            description: 'What was moved, and where.',
-          },
-          blocked: { type: 'array', items: { $ref: 'DeleteBlocked#' } },
-          errors: { type: 'array', items: { type: 'object', properties: { path: { type: 'string' }, reason: { type: 'string' } } } },
+          blocked: { type: 'array', items: { $ref: 'DeleteBlocked#' }, description: 'What was not added, with the reason.' },
+          move: { oneOf: [{ $ref: 'MoveBatch#' }, { type: 'null' }], description: 'The list of moves; null when nothing was added and there was no list.' },
         },
       },
       400: { description: 'No paths, more than 1000, or the destination is not a folder under the configured folders.', $ref: 'Error#' },
+      409: { description: 'Moving is being cancelled.', $ref: 'Error#' },
     },
+  },
+  'POST /api/files/move/cancel': {
+    operationId: 'cancelMove',
+    tags: ['Folders'],
+    summary: 'Cancel the moves',
+    description: 'Stops the copy in progress (its partial copy is removed and the original stays where it was) and skips the items still waiting. What was moved already stays moved.',
+    response: { 200: { $ref: 'MoveBatch#' }, 409: { description: 'Nothing is being moved.', $ref: 'Error#' } },
+  },
+  'DELETE /api/files/move': {
+    operationId: 'clearMoveProgress',
+    tags: ['Folders'],
+    summary: 'Forget a finished list of moves',
+    description: 'Removes the summary of the last moves (the app’s bar at the top of Sources).',
+    response: { 200: { description: 'Done.', $ref: 'Ok#' }, 409: { description: 'Files are being moved; cancel first.', $ref: 'Error#' } },
   },
 
   // ---------------------------------------------------------------- downloads
@@ -598,6 +652,9 @@ export const examples = [
   { method: 'POST', url: '/api/files/delete', body: { paths: ['/mnt/downloads/Film.mkv'] } },
   { method: 'POST', url: '/api/files/move/preview', body: { paths: ['/mnt/downloads/Film.mkv'], dest: '/mnt/media/Films' } },
   { method: 'POST', url: '/api/files/move', body: { paths: ['/mnt/downloads/Film.mkv'], dest: '/mnt/media/Films' } },
+  { method: 'GET', url: '/api/files/move' },
+  { method: 'POST', url: '/api/files/move/cancel' },
+  { method: 'DELETE', url: '/api/files/move' },
 
   { method: 'GET', url: '/api/download?path=%2Fmnt%2Fdownloads%2FFilm.mkv' },
   { method: 'POST', url: '/api/download/subtitles', body: { paths: ['/mnt/downloads/Film.mkv'] } },
