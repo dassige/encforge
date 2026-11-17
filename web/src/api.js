@@ -73,6 +73,8 @@ export const api = {
   updateJob: (id, patch) => request('PATCH', `/api/jobs/${id}`, patch),
   jobLog: (id) => get(`/api/jobs/${id}/log`),
   jobAction: (id, action, body) => post(`/api/jobs/${id}/${action}`, body),
+  // Failed or cancelled jobs back in the queue, in this order: { retried, skipped }.
+  retryJobs: (ids) => post('/api/jobs/retry', { ids }),
   reorder: (ids) => post('/api/jobs/reorder', { ids }),
   removeJobs: (ids) => post('/api/jobs/remove', { ids }),
   clearJobs: (statuses) => post('/api/jobs/clear', { statuses }),

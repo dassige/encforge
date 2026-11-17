@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarClock, Clock, Combine, Replace, ShieldCheck, Trash2, Upload, Wand2, X } from 'lucide-react';
+import { CalendarClock, Clock, Combine, Replace, RotateCcw, ShieldCheck, Trash2, Upload, Wand2, X } from 'lucide-react';
 import { clockTime, humanDuration } from '../format.js';
 import { api } from '../api.js';
 import { DRAG_PATHS } from './SourceBrowser.jsx';
@@ -51,6 +51,8 @@ export function QueuePanel({
   // A converting job cannot be removed: it is left out, and stays picked.
   const removable = chosen.filter((j) => !['running', 'paused'].includes(j.status));
   const replaceable = chosen.filter((j) => canReplace(j, replace));
+  // Failed or cancelled: back in the queue together (like Retry on one job).
+  const retryable = chosen.filter((j) => ['failed', 'cancelled'].includes(j.status) && !j.replaced);
 
   /** Checkbox: picks or unpicks one job. */
   function toggleCheck(job) {
@@ -90,6 +92,15 @@ export function QueuePanel({
       confirmLabel: t('common.remove'),
     });
     if (ok && (await run(() => api.removeJobs(removable.map((j) => j.id))))) setChecked(new Set());
+  }
+
+  async function retryChecked() {
+    // The server queues them in the order they had in the queue before (not the list's order).
+    const r = await run(
+      () => api.retryJobs(retryable.map((j) => j.id)),
+      (res) => t('queue.retrySelectedDone', { count: res.retried.length }),
+    );
+    if (r) setChecked(new Set());
   }
 
   async function replaceChecked() {
@@ -234,6 +245,11 @@ export function QueuePanel({
             </button>
           )}
           <div className="select-actions">
+            {retryable.length > 0 && (
+              <button className="btn ghost small" title={t('queue.retrySelectedTitle')} onClick={retryChecked}>
+                <RotateCcw size={14} /> {t('queue.retrySelected', { count: retryable.length })}
+              </button>
+            )}
             {replaceable.length > 0 && (
               <button className="btn ghost small" title={t('queue.replaceAllTitle')} onClick={replaceChecked}>
                 <Replace size={14} /> {t('queue.replaceAll', { count: replaceable.length })}

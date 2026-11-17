@@ -45,6 +45,10 @@
     "windowOpenUntil": "Fascia oraria aperta fino a: {time}",
     "guessed": "(alcune durate stimate)"
   },
+  "retrySelected": "Rimetti in coda ({count})",
+  "retrySelectedTitle": "Rimette i lavori selezionati non riusciti o annullati in fondo alla coda, nell’ordine che avevano in coda",
+  "retrySelectedDone_one": "Rimesso in coda {count} lavoro",
+  "retrySelectedDone_other": "Rimessi in coda {count} lavori",
   "replaceAll": "Sostituisci gli originali ({count})",
   "replaceAllTitle": "Sostituisci gli originali dei file convertiti selezionati",
   "selected_one": "{count} selezionato",

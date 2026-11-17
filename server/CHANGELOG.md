@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.6] - 2026/11/18
+
+- feat: Put a batch of failed jobs back in the queue at once
+
+When failed or cancelled jobs are selected in the queue, a "Put back
+in queue (n)" button puts them all back at the end of the queue, for
+example a batch that failed because a share was offline. They go back
+in the order they had in the queue before, not the order of the list
+(which shows the newest first), and the list reloads to show it. Jobs
+that can't be retried (done, converting, or whose original was
+replaced) are left as they are. New endpoint: POST /api/jobs/retry
+{ ids }, answering { retried, skipped }. The help and the API docs
+describe it in every language.
+
 ## [4.3.5] - 2026/11/18
 
 - feat: Move files in the background, with progress and Cancel

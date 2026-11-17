@@ -319,6 +319,23 @@ export const paths = {
     body: idsBody('Ids of the jobs to remove.'),
     response: { ...ok, 400: { description: 'ids is not a list.', $ref: 'Error#' }, 404: { description: 'A job does not exist.', $ref: 'Error#' }, ...conflict('A job is running.') },
   },
+  'POST /api/jobs/retry': {
+    operationId: 'retryJobs',
+    tags: ['Jobs'],
+    summary: 'Put several jobs back in the queue',
+    description: 'Like `POST /api/jobs/{id}/retry` for each job: finished jobs (usually failed or cancelled) go back to the end of the queue with the same preset, in the order they had in the queue before (whatever the order of `ids`). A job that cannot be retried (not finished, missing, or its original was replaced by the converted file) is skipped and listed with the reason; the others are retried.',
+    body: idsBody('Ids of the jobs.'),
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          retried: { type: 'array', items: { type: 'integer' }, description: 'Jobs back in the queue.' },
+          skipped: { type: 'array', items: { type: 'object', properties: { id: { type: 'integer' }, reason: { type: 'string' } } }, description: 'Jobs left as they were, with the reason.' },
+        },
+      },
+      400: { description: 'ids is not a list, or empty.', $ref: 'Error#' },
+    },
+  },
   'POST /api/jobs/clear': {
     operationId: 'clearJobs',
     tags: ['Jobs'],
@@ -599,6 +616,7 @@ export const examples = [
   { method: 'POST', url: '/api/jobs/reorder', body: { ids: [3, 1, 2] } },
   { method: 'POST', url: '/api/jobs/remove', body: { ids: [1] } },
   { method: 'POST', url: '/api/jobs/clear', body: { statuses: ['done', 'failed', 'cancelled'] } },
+  { method: 'POST', url: '/api/jobs/retry', body: { ids: [3, 4, 5] } },
   { method: 'POST', url: '/api/jobs/1/pause', body: {} },
   { method: 'POST', url: '/api/jobs/1/resume', body: {} },
   { method: 'POST', url: '/api/jobs/1/cancel', body: {} },

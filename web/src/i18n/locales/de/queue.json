@@ -45,6 +45,10 @@
     "windowOpenUntil": "Zeitfenster offen bis {time}",
     "guessed": "(einige Längen geschätzt)"
   },
+  "retrySelected": "Wieder einreihen ({count})",
+  "retrySelectedTitle": "Die ausgewählten fehlgeschlagenen oder abgebrochenen Aufträge in ihrer früheren Reihenfolge wieder ans Ende der Warteschlange stellen",
+  "retrySelectedDone_one": "{count} Auftrag wieder eingereiht",
+  "retrySelectedDone_other": "{count} Aufträge wieder eingereiht",
   "replaceAll": "Originale ersetzen ({count})",
   "replaceAllTitle": "Die Originale der ausgewählten konvertierten Dateien ersetzen",
   "selected_one": "{count} ausgewählt",

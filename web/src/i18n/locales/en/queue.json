@@ -45,6 +45,10 @@
     "windowOpenUntil": "Window open until {time}",
     "guessed": "(some lengths guessed)"
   },
+  "retrySelected": "Put back in queue ({count})",
+  "retrySelectedTitle": "Put the selected failed or cancelled jobs back at the end of the queue, in the order they had in the queue",
+  "retrySelectedDone_one": "Put {count} job back in the queue",
+  "retrySelectedDone_other": "Put {count} jobs back in the queue",
   "replaceAll": "Replace originals ({count})",
   "replaceAllTitle": "Replace the originals of the selected converted files",
   "selected_one": "{count} selected",

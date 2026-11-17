@@ -444,6 +444,38 @@ export class Queue {
     this.tick();
   }
 
+  /**
+   * Puts several finished jobs back in the queue (e.g. a batch that failed because a share was
+   * offline), in the order they had in the queue: a finished job keeps its old position. A job
+   * that can't be retried is skipped, with the reason.
+   * Returns { retried: [ids], skipped: [{ id, reason }] }.
+   */
+  retryMany(ids) {
+    if (!Array.isArray(ids) || !ids.length) throw badRequest('Choose the jobs to put back in the queue');
+    const retried = [];
+    const skipped = [];
+    const jobs = [];
+    for (const id of new Set(ids.map(Number))) {
+      try {
+        jobs.push(this.get(id));
+      } catch (err) {
+        skipped.push({ id, reason: err.message });
+      }
+    }
+    jobs.sort((a, b) => (a.position ?? 0) - (b.position ?? 0) || a.id - b.id);
+    for (const { id } of jobs) {
+      try {
+        this.retry(id);
+        retried.push(id);
+      } catch (err) {
+        skipped.push({ id, reason: err.message });
+      }
+    }
+    // The order of the list changed: the browsers fetch it again (job events only update rows).
+    if (retried.length) this.events.emit('jobs');
+    return { retried, skipped };
+  }
+
   /** Creates a new job for the same source (and tag), optionally with another preset. */
   async convertAgain(id, { presetId, position } = {}) {
     const job = this.get(id);

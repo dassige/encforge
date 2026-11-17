@@ -234,6 +234,8 @@ export function registerRoutes(app, { settings, presets, queue, events, handbrak
     return { ok: true };
   });
   app.post('/api/jobs/clear', async (req) => ({ removed: await queue.clearFinished(req.body?.statuses) }));
+  // { ids }: failed or cancelled jobs back in the queue, in the order they had in it.
+  app.post('/api/jobs/retry', async (req) => queue.retryMany(req.body?.ids));
 
   const action = (name, fn) =>
     app.post(`/api/jobs/:id/${name}`, async (req) => {

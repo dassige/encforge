@@ -45,6 +45,10 @@
     "windowOpenUntil": "Plage ouverte jusqu'à {time}",
     "guessed": "(certaines durées estimées)"
   },
+  "retrySelected": "Remettre en file ({count})",
+  "retrySelectedTitle": "Remet les tâches sélectionnées en échec ou annulées à la fin de la file d'attente, dans l'ordre qu'elles avaient dans la file",
+  "retrySelectedDone_one": "{count} tâche remise en file",
+  "retrySelectedDone_other": "{count} tâches remises en file",
   "replaceAll": "Remplacer les originaux ({count})",
   "replaceAllTitle": "Remplacer les originaux des fichiers convertis sélectionnés",
   "selected_one": "{count} sélectionnée",

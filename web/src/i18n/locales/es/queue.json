@@ -45,6 +45,10 @@
     "windowOpenUntil": "Franja abierta hasta {time}",
     "guessed": "(algunas duraciones son estimadas)"
   },
+  "retrySelected": "Volver a poner en cola ({count})",
+  "retrySelectedTitle": "Vuelve a poner al final de la cola los trabajos seleccionados con error o cancelados, en el orden que tenían en la cola",
+  "retrySelectedDone_one": "{count} trabajo vuelto a poner en cola",
+  "retrySelectedDone_other": "{count} trabajos vueltos a poner en cola",
   "replaceAll": "Reemplazar originales ({count})",
   "replaceAllTitle": "Reemplazar los originales de los archivos convertidos seleccionados",
   "selected_one": "{count} seleccionado",

@@ -344,3 +344,26 @@ test('replace: keeping the converted file copies it (also on one disk), and the 
     await t.done();
   }
 });
+
+test('queue: several failed or cancelled jobs go back in the queue at once, in their old order; others are skipped', async () => {
+  const t = await setup();
+  try {
+    const failed = [];
+    for (const n of [1, 2, 3]) failed.push(await t.job({ source: path.join(t.src, `E${n}.mkv`), output: path.join(t.out, `E${n}.mkv`), origin: null, status: 'failed' }));
+    const cancelled = await t.job({ source: path.join(t.src, 'C.mkv'), output: path.join(t.out, 'C.mkv'), origin: null, status: 'cancelled' });
+    const queued = await t.job({ source: path.join(t.src, 'Q.mkv'), output: path.join(t.out, 'Q.mkv'), origin: null, status: 'queued' });
+    // Their places in the queue when they were added: E1, E2, E3, C, then Q.
+    [...failed, cancelled, queued].forEach((id, i) => t.db.prepare('UPDATE jobs SET position = ? WHERE id = ?').run(10 + i, id));
+    const r = t.queue.retryMany([failed[2], failed[0], cancelled, failed[1], queued, 9999]);
+    assert.deepEqual(r.retried, [failed[0], failed[1], failed[2], cancelled]);
+    assert.deepEqual(r.skipped.map((x) => x.id), [9999, queued]);
+    assert.match(r.skipped[1].reason, /finished/);
+    for (const id of r.retried) assert.equal(t.queue.get(id).status, 'queued');
+    // In their old order, after what was already queued.
+    const order = t.db.prepare("SELECT id FROM jobs WHERE status = 'queued' ORDER BY position").all().map((j) => j.id);
+    assert.deepEqual(order, [queued, failed[0], failed[1], failed[2], cancelled]);
+    assert.throws(() => t.queue.retryMany([]), /Choose the jobs/);
+  } finally {
+    await t.done();
+  }
+});
