@@ -66,8 +66,9 @@ function trimSeparators(s) {
   return s.replace(/^[\s\-–—:,]+|[\s\-–—:,(]+$/g, '').trim();
 }
 
+// The season is a number ("S01E02") or a year for shows numbered by year ("S2024E21").
 const EPISODE_PATTERNS = [
-  /\bS(\d{1,2}) ?E(\d{1,3})(?: ?-? ?E(\d{1,3}))?(?![\d])/i,
+  /\bS(\d{1,2}|(?:19|20)\d\d) ?E(\d{1,3})(?: ?-? ?E(\d{1,3}))?(?![\d])/i,
   /(?<![\dx])(\d{1,2})x(\d{2,3})(?![\dp])/i,
 ];
 const YEAR = /\(?\b((?:19|20)\d\d)\b\)?/g;

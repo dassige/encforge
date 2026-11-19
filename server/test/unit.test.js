@@ -78,6 +78,9 @@ test('plannedOutputPath season layout: target/Show/S01/episode', () => {
   assert.equal(out('Completed/Show (2019)/s1/e.mkv'), path.resolve('/out/Show (2019)/S01/e.mkv'));
   // An episode's own folder names the season too.
   assert.equal(out('Show.S01E05.1080p/Show.S01E05.mkv'), path.resolve('/out/Show/S01/Show.S01E05.mkv'));
+  // A season named by its year.
+  assert.equal(out('Show.S2024.1080p/e.mkv'), path.resolve('/out/Show/S2024/e.mkv'));
+  assert.equal(out('Show.S2024E21.1080p/e.mkv'), path.resolve('/out/Show/S2024/e.mkv'));
   // A multi-season folder: the file name says the season.
   assert.equal(out('Show.S01-S03/Show.S02E01.mkv'), path.resolve('/out/Show/S02/Show.S02E01.mkv'));
   assert.equal(out('Show Seasons 1-3/Show 3x04.mkv'), path.resolve('/out/Show/S03/Show 3x04.mkv'));

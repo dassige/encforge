@@ -30,6 +30,9 @@ test('smart rename: TV episodes in both marker styles', () => {
     'White.Collar.5x01.Le.Monete.D.Oro.ITA.ENG.DSNP.WEBRip.XviD-Pir8.avi': "White Collar S05e01 - Le Monete D'Oro.avi",
     'Show.S01E01E02.Double.1080p.mkv': 'Show S01e01-e02 - Double.mkv',
     'The.Max.Show.S01E01.Max.Headroom.1080p.MAX.WEB-DL.mkv': 'The Max Show S01e01 - Max Headroom.mkv',
+    // A season named by its year.
+    'Some.Show.S2024E21.The.Title.1080p.WEB-DL.mkv': 'Some Show S2024e21 - The Title.mkv',
+    'Some.Show.S2024e21.720p.HDTV.x264.mkv': 'Some Show S2024e21.mkv',
   };
   for (const [from, to] of Object.entries(cases)) assert.equal(rename(from), to, from);
 });

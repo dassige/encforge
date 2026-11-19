@@ -537,7 +537,7 @@
       "title": "Riconosci episodio / film",
       "body": [
         "Legge le parti del nome di una release e ne costruisce uno pulito.",
-        "- **TV**: trova `S01E02`, `S01E01E02` o `1x02`. La serie è il testo prima, il titolo dell’episodio il testo dopo, fino al primo tag di release.",
+        "- **TV**: trova `S01E02`, `S01E01E02` o `1x02`, e `S2024E21` per una serie con le stagioni numerate per anno. La serie è il testo prima, il titolo dell’episodio il testo dopo, fino al primo tag di release.",
         "- **Film**: trova l’anno (`2024` o `(2024)`); il titolo è il testo prima.",
         "- **Tipo**: **Auto** tratta un nome con un numero di episodio come TV e tutto il resto come un film.",
         "### Modelli",

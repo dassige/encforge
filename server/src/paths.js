@@ -109,13 +109,14 @@ export function extensionForFormat(format) {
 }
 
 const SEASON_WORD = '(?:seasons?|stagion[ei]|staffel[n]?|saisons?|temporadas?)';
-// "S01", "Season 1", "Stagione 1"... as a word of the (tokenized) folder name.
+// "S01", "S2024" (a season named by its year), "Season 1", "Stagione 1"... as a word
+// of the (tokenized) folder name.
 const FOLDER_SEASON = [
-  /(?:^| )S(\d{1,2})(?= |$)/i,
+  /(?:^| )S(\d{1,2}|(?:19|20)\d\d)(?= |$)/i,
   new RegExp(`(?:^| )${SEASON_WORD} ?(\\d{1,2})(?= |$)`, 'i'),
 ];
-// An episode's own folder ("Show.S01E05.1080p") also names its season.
-const FOLDER_EPISODE = /(?:^| )S(\d{1,2}) ?E\d{1,3}/i;
+// An episode's own folder ("Show.S01E05.1080p", "Show.S2024E21") also names its season.
+const FOLDER_EPISODE = /(?:^| )S(\d{1,2}|(?:19|20)\d\d) ?E\d{1,3}/i;
 // Several seasons in one folder: "S01-S03", "S01-03", "Seasons 1-3".
 const FOLDER_SEASONS = new RegExp(`(?:^| )(?:S\\d{1,2} ?- ?S?\\d{1,2}|${SEASON_WORD} ?\\d{1,2} ?- ?\\d{1,2})(?= |$)`, 'i');
 

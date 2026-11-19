@@ -12,7 +12,7 @@ const MAX_CHECK_FILES = 100000;
 const BUILTINS = [
   {
     name: 'Auto: TV series and movies',
-    description: 'Recognises episodes (S01E02, 1x02) and movies (title + year); removes release tags.',
+    description: 'Recognises episodes (S01E02, 1x02, S2024E21) and movies (title + year); removes release tags.',
     steps: [{ type: 'smart', mode: 'auto' }],
   },
   {

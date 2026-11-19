@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.9] - 2026/11/19
+
+- feat: Recognise seasons numbered by year (S2024E21) in the renamer
+
+The "Auto: TV series and movies" renamer now reads names like
+"Show.S2024E21.Title" as season 2024, episode 21, as well as S01E02,
+S01E01E02 and 1x02. The name keeps the year as written:
+"Show S2024e21 - Title". Before, such files weren't recognised as
+episodes. The "Show and season folders" output layout also treats
+"Show.S2024" and "Show.S2024E21..." folders as season folders and
+puts their files in Show/S2024/. The help in every language and the
+built-in rule's description mention the new form.
+
 ## [4.3.8] - 2026/11/18
 
 - feat: Put a batch of failed jobs back in the queue at once

@@ -537,7 +537,7 @@
       "title": "Recognise episode / movie",
       "body": [
         "Reads the parts of a release name and builds a clean one.",
-        "- **TV**: finds `S01E02`, `S01E01E02` or `1x02`. The show is the text before it, the episode title the text after it, up to the first release tag.",
+        "- **TV**: finds `S01E02`, `S01E01E02` or `1x02`, and `S2024E21` for a show whose seasons are numbered by year. The show is the text before it, the episode title the text after it, up to the first release tag.",
         "- **Movie**: finds the year (`2024` or `(2024)`); the title is the text before it.",
         "- **Type**: **Auto** treats a name with an episode number as TV and anything else as a movie.",
         "### Templates",

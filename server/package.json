@@ -1,6 +1,6 @@
 {
   "name": "encforge-server",
-  "version": "4.3.6",
+  "version": "4.3.7",
   "private": true,
   "license": "GPL-2.0-only",
   "type": "module",
@@ -20,6 +20,6 @@
     "fastify": "^5.12.8",
     "nodemailer": "^10.4.0"
   },
-  "versionDate": "2026/11/18 09:53",
-  "git-parentCommit-ID": "a497ff8066a27730f020773d7b2a1b49f152c74d"
+  "versionDate": "2026/11/19 14:54",
+  "git-parentCommit-ID": "e4b6073927fdca2166184a86e22fcdd1b061e072"
 }

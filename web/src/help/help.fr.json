@@ -537,7 +537,7 @@
       "title": "Reconnaître épisode / film",
       "body": [
         "Lit les éléments d'un nom de release et en construit un propre.",
-        "- **Série** : trouve `S01E02`, `S01E01E02` ou `1x02`. La série est le texte qui précède, le titre de l'épisode le texte qui suit, jusqu'à la première balise de release.",
+        "- **Série** : trouve `S01E02`, `S01E01E02` ou `1x02`, et `S2024E21` pour une série dont les saisons sont numérotées par année. La série est le texte qui précède, le titre de l'épisode le texte qui suit, jusqu'à la première balise de release.",
         "- **Film** : trouve l'année (`2024` ou `(2024)`) ; le titre est le texte qui précède.",
         "- **Type** : **Auto** traite un nom avec un numéro d'épisode comme une série et tout le reste comme un film.",
         "### Modèles",

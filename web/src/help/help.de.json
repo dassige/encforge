@@ -537,7 +537,7 @@
       "title": "Episode / Film erkennen",
       "body": [
         "Liest die Bestandteile eines Release-Namens und baut einen sauberen.",
-        "- **Serie**: findet `S01E02`, `S01E01E02` oder `1x02`. Die Serie ist der Text davor, der Folgentitel der Text danach, bis zum ersten Release-Tag.",
+        "- **Serie**: findet `S01E02`, `S01E01E02` oder `1x02` sowie `S2024E21` für eine Serie, deren Staffeln nach Jahr nummeriert sind. Die Serie ist der Text davor, der Folgentitel der Text danach, bis zum ersten Release-Tag.",
         "- **Film**: findet das Jahr (`2024` oder `(2024)`); der Titel ist der Text davor.",
         "- **Typ**: **Auto** behandelt einen Namen mit Folgennummer als Serie und alles andere als Film.",
         "### Vorlagen",
