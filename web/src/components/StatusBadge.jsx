@@ -28,7 +28,7 @@ export function VerifyBadge({ status }) {
   return <span className={`badge ${cls} verify`}>{label}</span>;
 }
 
-/** Compact summary of a folder's job counts, e.g. "3 converted · 1 queued". */
+/** Compact summary of a folder's job counts, e.g. "3 converted · 1 check failed · 1 queued". */
 export function FolderBadges({ counts }) {
   if (!counts) return null;
   const parts = [];
@@ -36,11 +36,15 @@ export function FolderBadges({ counts }) {
   if (active) parts.push(['running', t('components.folderBadges.converting', { count: active })]);
   if (counts.queued) parts.push(['queued', t('components.folderBadges.queued', { count: counts.queued })]);
   if (counts.done) parts.push(['done', t('components.folderBadges.converted', { count: counts.done })]);
+  // Converted files (also in the count above) whose check after conversion failed.
+  if (counts.checkFailed) {
+    parts.push(['checkFailed', t('components.folderBadges.checkFailed', { count: counts.checkFailed }), 'failed verify', t('components.folderBadges.checkFailedTitle')]);
+  }
   if (counts.failed) parts.push(['failed', t('components.folderBadges.failed', { count: counts.failed })]);
   return (
     <span className="folder-badges">
-      {parts.map(([k, text]) => (
-        <span key={k} className={`badge ${k}`}>{text}</span>
+      {parts.map(([k, text, cls = k, title]) => (
+        <span key={k} className={`badge ${cls}`} title={title}>{text}</span>
       ))}
     </span>
   );

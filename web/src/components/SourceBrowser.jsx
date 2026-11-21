@@ -3,7 +3,7 @@ import { ArrowUp, Captions, ChevronRight, Download, Eye, FileVideo, Folder, Fold
 import { watchedFolder } from '../roots.js';
 import { api } from '../api.js';
 import { bytes, dateTime } from '../format.js';
-import { FolderBadges, StatusBadge } from './StatusBadge.jsx';
+import { FolderBadges, StatusBadge, VerifyBadge } from './StatusBadge.jsx';
 import { PlayButton, isVideoName, usePlayer } from '../player/Player.jsx';
 import { Help } from '../help/Help.jsx';
 import { downloadTitle, useDownload } from '../download/useDownload.jsx';
@@ -420,6 +420,7 @@ export function SourceBrowser({
                 <>
                   {item.excluded && <span className="badge cancelled" title={t('sources.excludedTitle')}>{t('sources.excluded')}</span>}
                   {item.jobs && <StatusBadge status={item.jobs} />}
+                  {item.checkFailed && <VerifyBadge status="error" />}
                   {item.subtitles?.length > 0 && <SubtitlesBadge list={item.subtitles} />}
                   <span className="muted" title={dateTime(item.mtime)}>{bytes(item.size)}</span>
                 </>

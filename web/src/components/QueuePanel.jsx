@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarClock, Clock, Combine, Replace, RotateCcw, ShieldCheck, Trash2, Upload, Wand2, X } from 'lucide-react';
+import { CalendarClock, Clock, Combine, Download, Replace, RotateCcw, ShieldCheck, Trash2, Upload, Wand2, X } from 'lucide-react';
 import { clockTime, humanDuration } from '../format.js';
+import { csvDateTime, downloadCsv } from '../csv.js';
+import { queueCsv } from './queueCsv.js';
 import { api } from '../api.js';
 import { DRAG_PATHS } from './SourceBrowser.jsx';
 import { JobRow, DRAG_JOB } from './JobRow.jsx';
@@ -105,6 +107,12 @@ export function QueuePanel({
 
   async function replaceChecked() {
     if (await replaceOriginals(replaceable)) setChecked(new Set());
+  }
+
+  /** The selected jobs, or else every job the filter shows, as a spreadsheet: queue-done-2026-11-21.csv. */
+  function exportCsv() {
+    const day = csvDateTime(Date.now()).slice(0, 10);
+    downloadCsv(`queue-${filter}-${day}.csv`, queueCsv(chosen.length ? chosen : visible));
   }
   const queuedIds = jobs.filter((j) => j.status === 'queued').map((j) => j.id);
   const finishedCount = jobs.filter((j) => ['done', 'failed', 'cancelled'].includes(j.status)).length;
@@ -215,6 +223,14 @@ export function QueuePanel({
             <Combine size={14} /> {t('queue.mergeThese')}
           </button>
         )}
+        <button
+          className="btn ghost small"
+          disabled={!visible.length}
+          title={t('queue.exportCsvTitle')}
+          onClick={exportCsv}
+        >
+          <Download size={14} /> {chosen.length ? t('queue.exportCsvSelected', { count: chosen.length }) : t('queue.exportCsv')}
+        </button>
         <button
           className="btn ghost small"
           disabled={!finishedCount}

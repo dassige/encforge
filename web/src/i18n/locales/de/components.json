@@ -36,6 +36,9 @@
     "queued_other": "{count} wartend",
     "converted_one": "{count} konvertiert",
     "converted_other": "{count} konvertiert",
+    "checkFailed_one": "{count} Prüfung fehlgeschlagen",
+    "checkFailed_other": "{count} Prüfungen fehlgeschlagen",
+    "checkFailedTitle": "Konvertierte Dateien, bei denen die Prüfung nach der Konvertierung Probleme gefunden hat",
     "failed_one": "{count} fehlgeschlagen",
     "failed_other": "{count} fehlgeschlagen"
   },

@@ -123,9 +123,18 @@ export function registerRoutes(app, { settings, presets, queue, events, handbrak
       // Sidecar subtitles of each video: [{ lang, forced, sdh, format }].
       const subs = (await subtitles?.folderSummary(dir, entries).catch(() => null)) ?? new Map();
       for (const i of items) if (i.type === 'file' && subs.has(i.name)) i.subtitles = subs.get(i.name);
-      const fileStatus = queue.statusForPaths(items.filter((i) => i.type === 'file').map((i) => i.path));
+      const fileJobs = queue.latestJobForPaths(items.filter((i) => i.type === 'file').map((i) => i.path));
       const dirStatus = queue.statusForDirs(items.filter((i) => i.type === 'dir').map((i) => i.path));
-      for (const i of items) i.jobs = i.type === 'file' ? fileStatus[i.path] ?? null : dirStatus[i.path] ?? null;
+      for (const i of items) {
+        if (i.type !== 'file') {
+          i.jobs = dirStatus[i.path] ?? null;
+          continue;
+        }
+        const job = fileJobs[i.path];
+        i.jobs = job?.status ?? null;
+        // Converted, but the check after conversion found problems.
+        if (job?.status === 'done' && job.verifyStatus === 'error') i.checkFailed = true;
+      }
     }
 
     const crumbs = [];

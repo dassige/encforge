@@ -50,7 +50,7 @@
         "- **Zur Warteschlange hinzufügen** fügt das Ausgewählte hinzu.",
         "- **Sortieren nach** ordnet die Liste nach Name, Datum, Dateityp oder Größe; der Pfeil daneben kehrt die Reihenfolge um. Ordner bleiben oben. Jede Ansicht (Konvertieren, Umbenennen, Zusammenfügen, Qualitätsprüfung) merkt sich ihre eigene Sortierung in diesem Browser.",
         "- Beim Hinzufügen eines Ordners wird jedes darin liegende Video hinzugefügt, Unterordner eingeschlossen. Bereits eingereihte Dateien werden übersprungen, ebenso bereits konvertierte, sofern Sie das nicht abgeschaltet haben.",
-        "Abzeichen zeigen, was mit jeder Datei geschehen ist: **Wartend**, **Wird konvertiert**, **Konvertiert**, **Fehlgeschlagen**. Bei Ordnern zählen sie die enthaltenen Dateien.",
+        "Abzeichen zeigen, was mit jeder Datei geschehen ist: **Wartend**, **Wird konvertiert**, **Konvertiert**, **Fehlgeschlagen**. Eine konvertierte Datei, bei der die Prüfung nach der Konvertierung Probleme gefunden hat, zeigt zusätzlich **Prüfung fehlgeschlagen**. Bei Ordnern zählen sie die enthaltenen Dateien.",
         "- **Hochladen** sendet Videos von Ihrem Computer in den geöffneten Ordner; das Ablegen von Dateien von Ihrem Computer auf dem Bereich bewirkt dasselbe. Siehe [Videos hochladen](#upload.overview).",
         "- **Herunterladen** kopiert die ausgewählten Dateien oder Ordner auf Ihren Computer: siehe [Dateien herunterladen](#download.overview).",
         "- **Löschen** entfernt die ausgewählten Dateien oder Ordner nach einer Bestätigung vom Server: siehe [Quelldateien löschen](#delete.overview).",
@@ -76,6 +76,7 @@
         "- **Ziehen** Sie einen wartenden Auftrag am Griff (⋮⋮), um die Reihenfolge zu ändern, oder verwenden Sie **An den Anfang**.",
         "- Die Filter zeigen alle Aufträge, die aktiven, die konvertierten oder die fehlgeschlagenen und abgebrochenen. **Diese umbenennen** (unter „Konvertiert“) öffnet deren Dateien in der Ansicht „Umbenennen“, **Diese zusammenführen** in der Ansicht „Zusammenführen“.",
         "- **Erledigte entfernen** entfernt konvertierte, fehlgeschlagene und abgebrochene Aufträge aus der Liste. Dateien bleiben unberührt.",
+        "- **CSV exportieren** lädt die Aufträge, die der Filter zeigt (oder nur die ausgewählten), als Tabelle herunter: Status, Prüfergebnis, Quelle und Ausgabe, Voreinstellung, Länge, Auflösung, Größen und gesparter Platz, wann sie hinzugefügt, gestartet und beendet wurden, Konvertierungsdauer, durchschnittliche fps und ein etwaiger Fehler.",
         "- **Wählen** Sie Aufträge mit ihren Kästchen aus, oder mit Strg-Klick und Umschalt-Klick (ein Bereich); **Alle auswählen** nimmt alle Aufträge, die der Filter zeigt. **Entfernen** nimmt sie dann aus der Liste (nicht die laufenden; Dateien bleiben unberührt), und **Originale ersetzen** tut es für die ausgewählten Aufträge aus der [Qualitätsprüfung](#quality.replace). **Wieder einreihen** stellt die ausgewählten fehlgeschlagenen oder abgebrochenen Aufträge alle zusammen in ihrer früheren Reihenfolge wieder ans Ende der Warteschlange: z. B. eine Reihe, die fehlschlug, weil eine Freigabe nicht erreichbar war.",
         "Klicken Sie auf einen Auftrag, um seine [Details](#job.details) zu sehen."
       ],

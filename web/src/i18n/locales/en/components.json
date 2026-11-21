@@ -36,6 +36,9 @@
     "queued_other": "{count} queued",
     "converted_one": "{count} converted",
     "converted_other": "{count} converted",
+    "checkFailed_one": "{count} check failed",
+    "checkFailed_other": "{count} check failed",
+    "checkFailedTitle": "Converted files whose check after conversion found problems",
     "failed_one": "{count} failed",
     "failed_other": "{count} failed"
   },

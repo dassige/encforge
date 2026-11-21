@@ -50,7 +50,7 @@
         "- **Aggiungi alla coda** aggiunge ciò che è selezionato.",
         "- **Ordina per** ordina l’elenco per nome, data, tipo di file o dimensione; la freccia accanto inverte l’ordine. Le cartelle restano in cima. Ogni vista (Converti, Rinomina, Unisci, Controllo qualità) ricorda il proprio ordinamento in questo browser.",
         "- Aggiungendo una cartella si aggiungono tutti i video al suo interno, sottocartelle comprese. I file già in coda vengono saltati, e anche quelli già convertiti a meno che tu non l’abbia disattivato.",
-        "I badge mostrano cosa è successo a ogni file: **In coda**, **In conversione**, **Convertito**, **Non riuscito**. Sulle cartelle contano i file al loro interno.",
+        "I badge mostrano cosa è successo a ogni file: **In coda**, **In conversione**, **Convertito**, **Non riuscito**. Un file convertito in cui la verifica dopo la conversione ha trovato problemi mostra anche **Verifica non riuscita**. Sulle cartelle contano i file al loro interno.",
         "- **Carica** invia video dal tuo computer nella cartella aperta; trascinare file dal computer sul pannello fa lo stesso. Vedi [Caricare i video](#upload.overview).",
         "- **Scarica** copia sul tuo computer i file o le cartelle selezionati: vedi [Scaricare i file](#download.overview).",
         "- **Elimina** rimuove dal server i file o le cartelle selezionati, dopo una conferma: vedi [Eliminare i file sorgente](#delete.overview).",
@@ -76,6 +76,7 @@
         "- **Trascina** un processo in coda dalla sua maniglia (⋮⋮) per cambiare l’ordine, oppure usa **Sposta in cima**.",
         "- I filtri mostrano tutti i processi, quelli attivi, quelli convertiti o quelli non riusciti e annullati. **Rinomina questi** (sotto Convertiti) apre i loro file nella vista Rinomina, **Unisci questi** nella vista Unisci.",
         "- **Rimuovi i terminati** toglie dall’elenco i processi convertiti, non riusciti e annullati. I file non vengono toccati.",
+        "- **Esporta CSV** scarica i processi mostrati dal filtro (o solo quelli selezionati) come foglio di calcolo: stato, esito della verifica, sorgente e destinazione, preimpostazione, durata, risoluzione, dimensioni e spazio risparmiato, quando sono stati aggiunti, iniziati e terminati, tempo di conversione, fps medi ed eventuale errore.",
         "- **Seleziona** i lavori con le loro caselle, oppure con Ctrl-clic e Maiusc-clic (un intervallo); **Seleziona tutto** prende tutti i lavori mostrati dal filtro. **Togli** li toglie poi dall’elenco (non quelli in conversione; i file non vengono toccati), e **Sostituisci gli originali** lo fa per i lavori selezionati del [controllo qualità](#quality.replace). **Rimetti in coda** rimette tutti insieme in fondo alla coda i lavori selezionati non riusciti o annullati, nell’ordine che avevano in coda: per esempio un gruppo fallito perché una condivisione non era raggiungibile.",
         "Fai clic su un processo per vederne i [dettagli](#job.details)."
       ],

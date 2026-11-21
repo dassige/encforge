@@ -50,7 +50,7 @@
         "- **Ajouter à la file** ajoute la sélection.",
         "- **Trier par** classe la liste par nom, date, type de fichier ou taille ; la flèche à côté inverse l'ordre. Les dossiers restent en haut. Chaque vue (Convertir, Renommer, Fusionner, Contrôle qualité) mémorise son propre tri dans ce navigateur.",
         "- Ajouter un dossier ajoute toutes les vidéos qu'il contient, sous-dossiers compris. Les fichiers déjà dans la file sont ignorés, de même que les fichiers déjà convertis, sauf si vous avez désactivé cette option.",
-        "Des pastilles indiquent ce qui est arrivé à chaque fichier : **En attente**, **Conversion**, **Converti**, **Échec**. Sur les dossiers, elles comptent les fichiers qu'ils contiennent.",
+        "Des pastilles indiquent ce qui est arrivé à chaque fichier : **En attente**, **Conversion**, **Converti**, **Échec**. Un fichier converti dont la vérification après conversion a trouvé des problèmes affiche aussi **Vérification échouée**. Sur les dossiers, elles comptent les fichiers qu'ils contiennent.",
         "- **Téléverser** envoie des vidéos de votre ordinateur dans le dossier ouvert ; déposer des fichiers de votre ordinateur sur le panneau fait la même chose. Voir [Téléverser des vidéos](#upload.overview).",
         "- **Télécharger** copie les fichiers ou dossiers sélectionnés sur votre ordinateur : voir [Télécharger des fichiers](#download.overview).",
         "- **Supprimer** retire les fichiers ou dossiers sélectionnés du serveur, après confirmation : voir [Supprimer des fichiers sources](#delete.overview).",
@@ -76,6 +76,7 @@
         "- **Faites glisser** une tâche en attente par sa poignée (⋮⋮) pour changer l'ordre, ou utilisez **Placer en tête**.",
         "- Les filtres affichent toutes les tâches, les actives, les converties, ou les échouées et annulées. **Renommer ceux-ci** (sous Converties) ouvre leurs fichiers dans la vue Renommer, **Fusionner ceux-ci** dans la vue Fusionner.",
         "- **Effacer les terminées** retire de la liste les tâches converties, échouées et annulées. Les fichiers ne sont pas touchés.",
+        "- **Exporter en CSV** télécharge les tâches affichées par le filtre (ou seulement celles sélectionnées) sous forme de tableur : état, résultat de la vérification, source et sortie, préréglage, durée, résolution, tailles et espace gagné, dates d'ajout, de début et de fin, durée de conversion, fps moyen et l'éventuelle erreur.",
         "- **Sélectionnez** des tâches avec leurs cases, ou avec Ctrl-clic et Maj-clic (une plage) ; **Tout sélectionner** prend toutes les tâches affichées par le filtre. **Retirer** les retire ensuite de la liste (pas celles en cours de conversion ; les fichiers ne sont pas touchés), et **Remplacer les originaux** le fait pour les tâches sélectionnées du [contrôle qualité](#quality.replace). **Remettre en file** remet ensemble à la fin de la file d'attente les tâches sélectionnées en échec ou annulées, dans l'ordre qu'elles avaient dans la file : par exemple un lot qui a échoué parce qu'un partage était inaccessible.",
         "Cliquez sur une tâche pour voir ses [détails](#job.details)."
       ],

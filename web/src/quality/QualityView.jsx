@@ -6,6 +6,7 @@ import { SourceBrowser, browserRoots } from '../components/SourceBrowser.jsx';
 import { StatusBadge } from '../components/StatusBadge.jsx';
 import { useDialogs } from '../components/Dialogs.jsx';
 import { bytes, dateTime, dirName, duration, fileName, relTo } from '../format.js';
+import { csvText, downloadCsv } from '../csv.js';
 import { Help } from '../help/Help.jsx';
 import { intlLocale, rich, t } from '../i18n/index.js';
 import { qualityIssue } from '../i18n/serverText.js';
@@ -43,10 +44,9 @@ function videoText(f) {
 }
 
 function csv(rows, roots) {
-  const q = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const head = ['path', 'folder', 'container', 'videoCodec', 'width', 'height', 'videoKbps', 'audio', 'length', 'sizeBytes', 'issues']
     .map((k) => t(`quality.csv.${k}`));
-  const lines = rows.map((f) => [
+  return csvText(head, rows.map((f) => [
     f.path,
     roots.find((r) => f.path.startsWith(r)) ?? '',
     f.container,
@@ -58,8 +58,7 @@ function csv(rows, roots) {
     f.duration ? duration(f.duration) : '',
     f.size,
     f.issues.map(qualityIssue).join('; '),
-  ].map(q).join(','));
-  return [head.map(q).join(','), ...lines].join('\r\n');
+  ]));
 }
 
 /** A scan's error: the server's own English one for a restart is shown translated. */
@@ -170,12 +169,7 @@ export function QualityView({ settings, scans, tick, changeTick, run, onError, o
   });
 
   function exportCsv() {
-    const blob = new Blob([`﻿${csv(selectedRows.length ? selectedRows : rows, roots)}`], { type: 'text/csv;charset=utf-8' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `quality-check-${meta?.id ?? ''}.csv`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    downloadCsv(`quality-check-${meta?.id ?? ''}.csv`, csv(selectedRows.length ? selectedRows : rows, roots));
   }
 
   const sortHead = (key, label) => (

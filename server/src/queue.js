@@ -240,32 +240,52 @@ export class Queue {
     this.tick();
   }
 
-  /** Latest job status per source path, for the file browser badges. */
-  statusForPaths(paths) {
+  /**
+   * The job that stands for each source path in the file browser: one converting, else queued, else
+   * converted, else the newest. { path: { status, verifyStatus } } (paths with no job are missing).
+   */
+  latestJobForPaths(paths) {
     if (!paths.length) return {};
     const stmt = this.db.prepare(
-      `SELECT status FROM jobs WHERE source_path = ? ORDER BY
+      `SELECT status, verify_status FROM jobs WHERE source_path = ? ORDER BY
         CASE WHEN status IN ('running','paused') THEN 0 WHEN status = 'queued' THEN 1 WHEN status = 'done' THEN 2 ELSE 3 END,
         id DESC LIMIT 1`,
     );
     const out = {};
     for (const p of paths) {
       const r = stmt.get(p);
-      if (r) out[p] = r.status;
+      if (r) out[p] = { status: r.status, verifyStatus: r.verify_status };
     }
     return out;
   }
 
-  /** Per-folder job counts by status, for the file browser badges. */
+  /** Latest job status per source path, for the file browser badges. */
+  statusForPaths(paths) {
+    return Object.fromEntries(Object.entries(this.latestJobForPaths(paths)).map(([p, j]) => [p, j.status]));
+  }
+
+  /**
+   * Per-folder job counts by status, for the file browser badges, plus checkFailed: files whose
+   * newest converted job failed its check after conversion (missing when none).
+   */
   statusForDirs(dirs) {
     const stmt = this.db.prepare(
       `SELECT status, COUNT(DISTINCT source_path) AS n FROM jobs WHERE substr(source_path, 1, ?) = ? GROUP BY status`,
+    );
+    // A later conversion of the same file that passed its check makes up for a failed one.
+    const checkFailed = this.db.prepare(
+      `SELECT COUNT(DISTINCT j.source_path) AS n FROM jobs j
+        WHERE substr(j.source_path, 1, ?) = ? AND j.status = 'done' AND j.verify_status = 'error'
+          AND NOT EXISTS (SELECT 1 FROM jobs k WHERE k.source_path = j.source_path AND k.status = 'done' AND k.id > j.id)`,
     );
     const out = {};
     for (const d of dirs) {
       const prefix = d.endsWith(path.sep) ? d : d + path.sep;
       const rows = stmt.all(prefix.length, prefix);
-      if (rows.length) out[d] = Object.fromEntries(rows.map((r) => [r.status, r.n]));
+      if (!rows.length) continue;
+      out[d] = Object.fromEntries(rows.map((r) => [r.status, r.n]));
+      const failed = out[d].done ? checkFailed.get(prefix.length, prefix).n : 0;
+      if (failed) out[d].checkFailed = failed;
     }
     return out;
   }

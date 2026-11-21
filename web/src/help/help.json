@@ -50,7 +50,7 @@
         "- **Add to queue** adds what is selected.",
         "- **Sort by** orders the list by name, date, file type or size; the arrow next to it reverses the order. Folders stay on top. Each view (Convert, Rename, Merge, Quality check) remembers its own sort in this browser.",
         "- Adding a folder adds every video inside it, sub-folders included. Files already queued are skipped, and so are files already converted unless you turned that off.",
-        "Badges show what happened to each file: **Queued**, **Converting**, **Converted**, **Failed**. On folders they count the files inside.",
+        "Badges show what happened to each file: **Queued**, **Converting**, **Converted**, **Failed**. A converted file whose check after conversion found problems also shows **Check failed**. On folders they count the files inside.",
         "- **Upload** sends videos from your computer into the open folder; dropping files from your computer onto the panel does the same. See [Uploading videos](#upload.overview).",
         "- **Download** copies the selected files or folders to your computer: see [Downloading files](#download.overview).",
         "- **Delete** removes the selected files or folders from the server, after a confirmation: see [Deleting source files](#delete.overview).",
@@ -76,6 +76,7 @@
         "- **Drag** a queued job by its handle (⋮⋮) to change the order, or use **Move to top**.",
         "- The filters show all jobs, the active ones, the converted ones or the failed and cancelled ones. **Rename these** (under Converted) opens their files in the Rename view, **Merge these** in the Merge view.",
         "- **Clear finished** removes converted, failed and cancelled jobs from the list. Files are not touched.",
+        "- **Export CSV** downloads the jobs the filter shows (or only the selected ones) as a spreadsheet: status, check result, source and output, preset, length, resolution, sizes and space saved, when each was added, started and finished, conversion time, average fps and any error.",
         "- **Select** jobs with their checkboxes, or with Ctrl-click and Shift-click (a range); **Select all** takes every job the filter shows. **Remove** then takes them off the list (not the ones converting; files are not touched), and **Replace originals** does it for the selected jobs from the [quality check](#quality.replace). **Put back in queue** puts the selected failed or cancelled jobs back at the end of the queue all together, in the order they had in the queue: for example a batch that failed because a share was offline.",
         "Click a job to see its [details](#job.details)."
       ],

@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.11] - 2026/11/21
+
+- feat: Export the queue as CSV, and show failed checks in Sources
+
+The queue has an "Export CSV" button that downloads the jobs the
+current filter shows (All, Active, Converted, Failed / cancelled,
+Check failed, Quality) as a spreadsheet, or only the selected jobs
+when some are ticked ("Export CSV (n)"). The file is named after the
+filter and the day, e.g. queue-done-2026-11-21.csv. Columns: status,
+check result, source, output, preset, length, resolution, video
+codec, source and output size, space saved, when the job was added,
+started and finished, conversion time, average fps, when the
+original was replaced, error and tag. The Quality view's export now
+uses the same CSV helper; its output is unchanged.
+
+In Sources, a converted file whose check after conversion failed
+also shows a "Check failed" badge, and folders count such files
+("2 check failed"), subfolders included. A file converted again that
+passed its check is no longer counted. The folder listing's `jobs`
+field keeps its shape: files get `checkFailed: true`, folders a
+`checkFailed` count; the API docs describe both. The help and the
+labels cover both changes in every language.
+
 ## [4.3.10] - 2026/11/19
 
 - feat: Recognise seasons numbered by year (S2024E21) in the renamer

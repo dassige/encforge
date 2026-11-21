@@ -36,6 +36,9 @@
     "queued_other": "{count} en cola",
     "converted_one": "{count} convertido",
     "converted_other": "{count} convertidos",
+    "checkFailed_one": "{count} comprobación fallida",
+    "checkFailed_other": "{count} comprobaciones fallidas",
+    "checkFailedTitle": "Archivos convertidos cuya comprobación tras la conversión encontró problemas",
     "failed_one": "{count} con error",
     "failed_other": "{count} con error"
   },
