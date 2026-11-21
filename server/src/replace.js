@@ -144,6 +144,11 @@ export class Replacer {
     return this.state();
   }
 
+  /** True while job id's original is being replaced, or waiting to be. */
+  isReplacing(id) {
+    return this.busy.has(id) || (this.batch?.items ?? []).some((i) => i.id === id && ['waiting', 'replacing'].includes(i.status));
+  }
+
   /** Finishes the file being replaced, and skips the rest. */
   stop() {
     if (!this.batch?.running) throw conflict('Nothing is being replaced');
@@ -228,6 +233,8 @@ export class Replacer {
     if (job.verifyStatus === 'running') return { code: 'checking', reason: 'The converted file is being checked; wait for the check' };
     if (job.verifyStatus === 'error') return { code: 'checkFailed', reason: 'The check after conversion failed: fix that (or check again) first' };
     if (!(await exists(job.outputPath))) return { code: 'noOutput', reason: `The converted file is gone: ${job.outputPath}` };
+    // Set in index.js: the converted file may be waiting to be moved from the queue.
+    if (this.mover?.isMoving(job.outputPath)) return { code: 'moving', reason: 'The converted file is being moved; wait for the move' };
     const root = rootOf(this.settings.get('sourceRoots'), job.sourcePath);
     if (!root) return { code: 'outsideSources', reason: `The original is no longer in a sources folder: ${job.sourcePath}` };
     if (this.settings.get('protectedRoots').includes(root)) {

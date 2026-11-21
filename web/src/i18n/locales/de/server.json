@@ -160,6 +160,16 @@
     "gone": "{name} gibt es nicht mehr",
     "videoNotMoved": "{name} wurde nicht verschoben, daher bleibt seine Untertiteldatei bei ihm"
   },
+  "output": {
+    "noJob": "Auftrag {id} existiert nicht mehr",
+    "notDone": "{name} ist noch nicht konvertiert",
+    "checking": "{name} wird gerade geprüft: Warten Sie auf die Prüfung",
+    "replacedOriginal": "{name} hat sein Original ersetzt: Es ist jetzt eine Quelldatei (verwenden Sie „Quellen“)",
+    "replacing": "Das Original von {name} wird gerade ersetzt",
+    "outside": "{name} liegt nicht mehr im Zielordner oder einem Quellordner",
+    "gone": "{name} existiert nicht mehr",
+    "pendingOutput": "{name} wartet darauf, erneut konvertiert zu werden: Entfernen Sie zuerst diesen Auftrag aus der Warteschlange"
+  },
   "backup": {
     "busy": {
       "conversion": "eine Konvertierung läuft",
@@ -187,6 +197,7 @@
     "checking": "Die konvertierte Datei wird geprüft: Warten Sie auf die Prüfung",
     "checkFailed": "Die Prüfung nach der Konvertierung ist fehlgeschlagen: Das Original wird nicht ersetzt",
     "noOutput": "Die konvertierte Datei ist nicht mehr da",
+    "moving": "Die konvertierte Datei wird gerade verschoben: Warten Sie, bis das Verschieben fertig ist",
     "outsideSources": "Das Original ist nicht mehr in einem Quellordner",
     "protected": "Das Original liegt in einem geschützten Quellordner (Einstellungen → Ordner)",
     "pending": "Das Original ist wieder in der Warteschlange oder wird konvertiert: Entfernen Sie es zuerst aus der Warteschlange",

@@ -160,6 +160,16 @@
     "gone": "{name} ya no existe",
     "videoNotMoved": "{name} no se movió, así que su archivo de subtítulos se queda con él"
   },
+  "output": {
+    "noJob": "El trabajo {id} ya no existe",
+    "notDone": "{name} aún no está convertido",
+    "checking": "{name} se está comprobando: espere a que termine la comprobación",
+    "replacedOriginal": "{name} reemplazó a su original: ahora es un archivo de origen (use Orígenes)",
+    "replacing": "El original de {name} se está reemplazando",
+    "outside": "{name} ya no está en la carpeta de destino ni en una carpeta de origen",
+    "gone": "{name} ya no existe",
+    "pendingOutput": "{name} está en cola para convertirse de nuevo: quite primero ese trabajo de la cola"
+  },
   "backup": {
     "busy": {
       "conversion": "hay una conversión en curso",
@@ -187,6 +197,7 @@
     "checking": "Se está comprobando el archivo convertido: espere a que termine la comprobación",
     "checkFailed": "La comprobación tras la conversión falló: el original no se reemplaza",
     "noOutput": "El archivo convertido ya no existe",
+    "moving": "El archivo convertido se está moviendo: espere a que termine",
     "outsideSources": "El original ya no está en una carpeta de origen",
     "protected": "El original está en una carpeta de origen protegida (Ajustes → Carpetas)",
     "pending": "El original vuelve a estar en la cola o convirtiéndose: quítelo primero de la cola",

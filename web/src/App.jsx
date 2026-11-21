@@ -452,6 +452,9 @@ export default function App({ auth, onAuthChange }) {
         />
         <QueuePanel
           replace={data.replace}
+          move={data.move}
+          onError={onError}
+          onNotice={onNotice}
           jobs={jobs}
           presets={presets}
           presetId={effectivePresetId}

@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.11] - 2026/11/21
+
+- feat: Move or delete converted files from the queue
+
+When converted jobs are selected in the queue, "Move (n)" moves
+their converted files to a folder picked like in Sources (under a
+sources folder or the target folder), and "Delete files (n)" deletes
+them for good. Both ask first, showing exactly what will go and what
+is refused, with the reason. Subtitle files next to a converted file
+go with it.
+
+Moves run in the background with Sources' mover: same progress bar
+(shown at the top of the queue for converted files), Cancel, and
+safe copies between disks; nothing is overwritten. Once a file is
+moved, its jobs point at the new place, so Play, Rename, Merge and
+Replace original keep working. Deleting removes the files and then
+their jobs; the conversions stay in Stats.
+
+Refused: jobs not converted, a file being checked, a job whose
+original is being replaced, a file a queued job will write again,
+files in a protected sources folder or no longer there, and a
+converted file that replaced its original (it is a source file now:
+use Sources). Each move is checked again just before it starts, and
+Replace original refuses a job whose converted file is waiting to be
+moved.
+
+New endpoints: POST /api/jobs/output/delete/preview,
+/api/jobs/output/delete, /api/jobs/output/move/preview and
+/api/jobs/output/move ({ ids, dest }); moving and deleting need an
+admin key, as in Sources. The API docs, the help and the labels
+cover it in every language.
+
 ## [4.3.10] - 2026/11/21
 
 - feat: Export the queue as CSV, and show failed checks in Sources

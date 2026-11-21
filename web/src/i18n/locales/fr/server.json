@@ -160,6 +160,16 @@
     "gone": "{name} n'existe plus",
     "videoNotMoved": "{name} n'a pas été déplacé, son fichier de sous-titres reste donc avec lui"
   },
+  "output": {
+    "noJob": "La tâche {id} n'existe plus",
+    "notDone": "{name} n'est pas encore converti",
+    "checking": "{name} est en cours de vérification : attendez la fin de la vérification",
+    "replacedOriginal": "{name} a remplacé son original : c'est maintenant un fichier source (utilisez Sources)",
+    "replacing": "L'original de {name} est en cours de remplacement",
+    "outside": "{name} n'est plus dans le dossier de destination ni dans un dossier source",
+    "gone": "{name} n'existe plus",
+    "pendingOutput": "{name} est en file pour être converti à nouveau : retirez d'abord cette tâche de la file"
+  },
   "backup": {
     "busy": {
       "conversion": "une conversion est en cours",
@@ -187,6 +197,7 @@
     "checking": "Le fichier converti est en cours de contrôle : attendez la fin du contrôle",
     "checkFailed": "Le contrôle après conversion a échoué : l’original n’est pas remplacé",
     "noOutput": "Le fichier converti n’existe plus",
+    "moving": "Le fichier converti est en cours de déplacement : attendez la fin du déplacement",
     "outsideSources": "L’original n’est plus dans un dossier source",
     "protected": "L’original se trouve dans un dossier source protégé (Paramètres → Dossiers)",
     "pending": "L’original est de nouveau en file ou en conversion : retirez-le d’abord de la file",

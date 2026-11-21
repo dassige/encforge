@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarClock, Clock, Combine, Download, Replace, RotateCcw, ShieldCheck, Trash2, Upload, Wand2, X } from 'lucide-react';
-import { clockTime, humanDuration } from '../format.js';
+import { CalendarClock, Clock, Combine, Download, FileX, FolderInput, Replace, RotateCcw, ShieldCheck, Trash2, Upload, Wand2, X } from 'lucide-react';
+import { clockTime, dirName, humanDuration } from '../format.js';
+import { FolderPicker } from './FolderPicker.jsx';
+import { MoveProgress } from './MoveProgress.jsx';
+import { useDeleteFiles } from './useDeleteFiles.jsx';
+import { useMoveFiles } from './useMoveFiles.jsx';
 import { csvDateTime, downloadCsv } from '../csv.js';
 import { queueCsv } from './queueCsv.js';
 import { api } from '../api.js';
@@ -26,9 +30,14 @@ const FILTERS = [
 export function QueuePanel({
   jobs, presets, presetId, onPresetChange, position, onPositionChange, settings,
   onDropPaths, onSelect, selectedId, run, onRename, onMerge, estimate, queueState, replace = null,
+  move = null, onError, onNotice,
 }) {
   const dialogs = useDialogs();
   const replaceOriginals = useReplaceOriginal({ settings, run, replace });
+  const moveOutputs = useMoveFiles({ onError, onNotice, kind: 'outputs' });
+  const deleteOutputs = useDeleteFiles({ onError, onNotice, kind: 'outputs' });
+  // The jobs whose converted files are being moved to a folder picked in the dialog.
+  const [moveJobs, setMoveJobs] = useState(null);
   const [filter, setFilter] = useState('all');
   // Jobs picked with their checkboxes (or Ctrl/Shift-click), for Remove and Replace originals.
   const [checked, setChecked] = useState(() => new Set());
@@ -55,6 +64,9 @@ export function QueuePanel({
   const replaceable = chosen.filter((j) => canReplace(j, replace));
   // Failed or cancelled: back in the queue together (like Retry on one job).
   const retryable = chosen.filter((j) => ['failed', 'cancelled'].includes(j.status) && !j.replaced);
+  // Converted files that can be moved or deleted (the server checks the rest): not once one
+  // replaced its original, as it is then the video in the sources folder.
+  const withOutput = chosen.filter((j) => j.status === 'done' && !(j.replaced && !j.replaced.keptConverted));
 
   /** Checkbox: picks or unpicks one job. */
   function toggleCheck(job) {
@@ -107,6 +119,18 @@ export function QueuePanel({
 
   async function replaceChecked() {
     if (await replaceOriginals(replaceable)) setChecked(new Set());
+  }
+
+  async function moveOutputsTo(dest) {
+    const ids = moveJobs.map((j) => j.id);
+    setMoveJobs(null);
+    // The jobs follow their files as each one is moved (job events).
+    if (await moveOutputs(ids, dest)) setChecked(new Set());
+  }
+
+  async function deleteChecked() {
+    // The jobs leave the list too (the effect on `jobs` drops them from the selection).
+    await deleteOutputs(withOutput.map((j) => j.id));
   }
 
   /** The selected jobs, or else every job the filter shows, as a spreadsheet: queue-done-2026-11-21.csv. */
@@ -271,6 +295,16 @@ export function QueuePanel({
                 <Replace size={14} /> {t('queue.replaceAll', { count: replaceable.length })}
               </button>
             )}
+            {withOutput.length > 0 && (
+              <button className="btn ghost small" title={t('queue.moveOutputsTitle')} onClick={() => setMoveJobs(withOutput)}>
+                <FolderInput size={14} /> {t('queue.moveOutputs', { count: withOutput.length })}
+              </button>
+            )}
+            {withOutput.length > 0 && (
+              <button className="btn ghost small danger" title={t('queue.deleteOutputsTitle')} onClick={deleteChecked}>
+                <FileX size={14} /> {t('queue.deleteOutputs', { count: withOutput.length })}
+              </button>
+            )}
             <button className="btn ghost small danger" disabled={!removable.length} title={t('queue.removeSelectedTitle')} onClick={removeChecked}>
               <Trash2 size={14} /> {removable.length ? t('queue.removeSelected', { count: removable.length }) : t('common.remove')}
             </button>
@@ -280,6 +314,8 @@ export function QueuePanel({
 
       <EstimateBar estimate={estimate} queue={queueState} />
       <ReplaceProgress replace={replace} run={run} />
+      {/* Converted files being moved (Sources shows the moves of its own files). */}
+      <MoveProgress move={move?.items.some((i) => i.jobIds) ? move : null} onError={onError} />
 
       <div className="job-list" onDragOver={(e) => dragJob != null && e.preventDefault()} onDrop={() => dragJob != null && reorderDrop(null)}>
         {visible.length === 0 && (
@@ -331,6 +367,18 @@ export function QueuePanel({
         ))}
         {dropActive && <div className="drop-overlay">{t('queue.dropToAdd')}</div>}
       </div>
+      {moveJobs && (
+        <FolderPicker
+          settings={settings}
+          kind="any"
+          title={t('queue.moveOutputsTo', { count: moveJobs.length })}
+          chooseLabel={t('sources.moveHere')}
+          initial={dirName(moveJobs[0].outputPath)}
+          onPick={moveOutputsTo}
+          onClose={() => setMoveJobs(null)}
+          onError={onError}
+        />
+      )}
     </section>
   );
 }

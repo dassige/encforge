@@ -34,6 +34,8 @@ export class Mover {
     Object.assign(this, { sourceFiles, settings, queue, events, log, rename, progressEvery });
     // Deleting or moving again what is waiting or being moved is refused (deleteFiles.js).
     sourceFiles.mover = this;
+    // Set by OutputFiles (outputFiles.js): checks and updates the jobs of converted files moved.
+    this.outputs = null;
     this.batch = null;
     this.working = null;
     this.abort = null;
@@ -67,7 +69,14 @@ export class Mover {
    */
   async previewMove({ paths, dest }) {
     const dir = await this.destination(dest);
-    const checked = await this.sourceFiles.check(paths, 'move');
+    return this.plan(await this.sourceFiles.check(paths, 'move'), dir);
+  }
+
+  /**
+   * Where each checked item ({ items, blocked } as from SourceFiles.check) would go in the folder
+   * dir, refusing what can't go there. Items with jobIds are converted files (outputFiles.js).
+   */
+  async plan(checked, dir) {
     const blocked = [...checked.blocked];
     const items = [];
     const refused = new Set();
@@ -136,7 +145,12 @@ export class Mover {
    */
   async start({ paths, dest }) {
     if (this.batch?.cancelling) throw conflict('Moving is being cancelled; try again in a moment');
-    const { items, blocked } = await this.previewMove({ paths, dest });
+    return this.enqueue(await this.previewMove({ paths, dest }));
+  }
+
+  /** Adds planned items (from plan()) to the list and starts on it. Returns { blocked, move: the list }. */
+  enqueue({ items, blocked }) {
+    if (this.batch?.cancelling) throw conflict('Moving is being cancelled; try again in a moment');
     if (items.length) {
       if (!this.batch?.running) {
         this.batch = { running: true, cancelling: false, startedAt: Date.now(), finishedAt: null, items: [], current: null };
@@ -145,6 +159,8 @@ export class Mover {
         this.batch.items.push({
           path: it.path, to: it.to, name: path.basename(it.path), type: it.type, files: it.files, bytes: it.bytes,
           sidecarOf: it.sidecarOf ?? null, status: 'waiting', error: null, code: null, params: null,
+          // A converted file: the jobs whose output it is (their output path follows the move).
+          ...(it.jobIds ? { jobIds: it.jobIds } : {}),
         });
       }
       this.emit();
@@ -198,6 +214,7 @@ export class Mover {
             },
           });
           item.status = 'done';
+          if (item.jobIds) this.outputs?.moved(item);
           this.log.info(`Moved ${item.type === 'dir' ? 'folder' : 'file'} ${item.path} to ${item.to}${copied ? ' (copied, then removed)' : ''} (${item.files} file(s), ${item.bytes} bytes)`);
           this.events.emit('files', { moved: 1 });
         } catch (err) {
@@ -228,7 +245,11 @@ export class Mover {
   async moveOne(item, { signal, onProgress }) {
     const name = item.name;
     if (!(await exists(item.path))) throw refusal('gone', { name }, `${name} no longer exists`);
-    if (!item.sidecarOf && this.queue.pendingSourcesUnder(item.path).length) {
+    if (item.jobIds) {
+      // A converted file: e.g. its original may have started being replaced meanwhile.
+      const problem = this.outputs ? await this.outputs.recheck(item) : null;
+      if (problem) throw refusal(problem.code, problem.params, problem.reason);
+    } else if (!item.sidecarOf && this.queue.pendingSourcesUnder(item.path).length) {
       throw refusal('pendingFile', { name }, `${name} is queued or converting; remove it from the queue first`);
     }
     if (await exists(item.to)) {

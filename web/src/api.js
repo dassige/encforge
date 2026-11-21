@@ -106,6 +106,12 @@ export const api = {
   moveState: () => get('/api/files/move'),
   cancelMove: () => post('/api/files/move/cancel'),
   clearMove: () => request('DELETE', '/api/files/move'),
+  // The converted files of jobs (server/src/outputFiles.js): deleted with their jobs, or moved
+  // in the background like the above (the jobs follow their files).
+  outputDeletePreview: (ids) => post('/api/jobs/output/delete/preview', { ids }),
+  deleteOutputs: (ids) => post('/api/jobs/output/delete', { ids }),
+  outputMovePreview: (ids, dest) => post('/api/jobs/output/move/preview', { ids, dest }),
+  moveOutputs: (ids, dest) => post('/api/jobs/output/move', { ids, dest }),
 
   downloadUrl: (path) => `/api/download?path=${encodeURIComponent(path)}`,
   // Replacing originals in the background (server/src/replace.js)

@@ -14,7 +14,7 @@ function Blocked({ list }) {
       <p className="small"><strong>{t('components.move.notMoved')}</strong></p>
       <ul className="ask-list small">
         {list.slice(0, SHOW).map((b) => (
-          <li key={b.path}>
+          <li key={`${b.jobId ?? ''}:${b.path}`}>
             {fileName(b.path)}: <span className="muted">{moveReason(b)}</span>
           </li>
         ))}
@@ -24,19 +24,28 @@ function Blocked({ list }) {
   );
 }
 
+// What is moved: files and folders in Sources (by path), or converted files of jobs (by job id),
+// whose jobs then point at the new place.
+const KINDS = {
+  files: { preview: api.movePreview, start: api.moveFiles, noteKey: 'components.move.note' },
+  outputs: { preview: api.outputMovePreview, start: api.moveOutputs, noteKey: 'components.move.noteOutputs' },
+};
+
 /**
- * Returns move(paths, dest): shows exactly what would be moved into dest, asks, then hands the
- * moves to the server, which does them in the background. Resolves to true when some were started.
+ * Returns move(what, dest): shows exactly what would be moved into dest, asks, then hands the
+ * moves to the server, which does them in the background. what: paths, or with kind 'outputs'
+ * job ids (their converted files). Resolves to true when some were started.
  */
-export function useMoveFiles({ onError, onNotice }) {
+export function useMoveFiles({ onError, onNotice, kind = 'files' }) {
   const dialogs = useDialogs();
+  const how = KINDS[kind];
 
   return useCallback(
-    async (paths, dest) => {
-      if (!paths.length || !dest) return false;
+    async (what, dest) => {
+      if (!what.length || !dest) return false;
       let preview;
       try {
-        preview = await api.movePreview(paths, dest);
+        preview = await how.preview(what, dest);
       } catch (e) {
         onError?.(e);
         return false;
@@ -75,7 +84,7 @@ export function useMoveFiles({ onError, onNotice }) {
               </ul>
             )}
             <Blocked list={blocked} />
-            <p className="muted small">{t('components.move.note')}</p>
+            <p className="muted small">{t(how.noteKey)}</p>
           </>
         ),
         buttons: [
@@ -88,7 +97,7 @@ export function useMoveFiles({ onError, onNotice }) {
         // Subtitle files are found again by the server, and go with their video. The moves run
         // in the background: the bar at the top of Sources (MoveProgress) shows how far they are.
         const chosen = items.filter((i) => !i.sidecarOf).map((i) => i.path);
-        const r = await api.moveFiles(chosen, preview.dest);
+        const r = await how.start(kind === 'outputs' ? [...new Set(items.flatMap((i) => i.jobIds ?? []))] : chosen, preview.dest);
         // What was refused now (e.g. the name got taken meanwhile) is in blocked.
         const added = r.move ? Math.max(0, chosen.length - r.blocked.length) : 0;
         if (added) onNotice?.(t('components.move.started', { count: added }));
@@ -101,6 +110,6 @@ export function useMoveFiles({ onError, onNotice }) {
         return false;
       }
     },
-    [dialogs, onError, onNotice],
+    [dialogs, onError, onNotice, how, kind],
   );
 }

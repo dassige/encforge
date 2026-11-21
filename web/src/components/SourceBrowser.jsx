@@ -241,7 +241,8 @@ export function SourceBrowser({
         </div>
       </div>
 
-      <MoveProgress move={move} onError={onError} />
+      {/* Moves of converted files started from the queue are shown there. */}
+      <MoveProgress move={move?.items.some((i) => !i.jobIds) ? move : null} onError={onError} />
 
       <nav className="crumbs" aria-label={t('sources.crumbs')}>
         {listing?.parent && (

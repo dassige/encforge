@@ -181,6 +181,39 @@ const conflict = (what) => ({ 409: { description: what, $ref: 'Error#' } });
 const positionProp = { type: ['string', 'null'], description: '`next`: before the first queued job; anything else or empty: after the last one.' };
 
 schemas.push({
+  $id: 'OutputBlocked',
+  type: 'object',
+  description: 'A job whose converted file cannot be moved or deleted now (or, when moving, cannot go into that folder).',
+  properties: {
+    jobId: { type: 'integer', description: 'Absent for a refusal about the destination (sameFolder, exists).' },
+    path: { type: 'string', description: 'The converted file (empty for noJob).' },
+    reason: { type: 'string', description: 'Why, in English.' },
+    code: {
+      type: 'string',
+      description: 'noJob, notDone (not converted), checking (the check after conversion is running), replacedOriginal (it replaced its original: it is a source file now, see Sources), replacing (its original is being replaced), outside (not under the target folder or a sources folder), protected (in a protected sources folder), gone, moving (being moved already), pendingOutput (a queued or converting job will write the same file); when moving also sameFolder or exists.',
+    },
+    params: { type: 'object', description: 'Values for wording the reason (name, root, id).' },
+  },
+});
+const outputItems = (verb) => ({
+  type: 'array',
+  description: `What would be ${verb}: the converted files, and their subtitle files (with \`sidecarOf\`).`,
+  items: {
+    type: 'object',
+    properties: {
+      path: { type: 'string' },
+      ...(verb === 'moved' ? { to: { type: 'string', description: 'Where it would go.' } } : {}),
+      type: { type: 'string', enum: ['file'] },
+      files: { type: 'integer' },
+      bytes: { type: 'integer' },
+      jobIds: { type: 'array', items: { type: 'integer' }, description: 'The converted jobs whose output it is (more than one when a job was converted again into the same file).' },
+      sidecarOf: { type: 'string', description: 'For a subtitle file next to a converted file: that file.' },
+    },
+  },
+});
+const outputRules = 'A converted file can be moved or deleted when its job is converted (`done`), not being checked, its original is not being replaced, no queued or converting job will write the same file, and it is in the target folder or an unprotected sources folder. Once its original was replaced by it (and it was not kept), it is the video in the sources folder: use the `/api/files` routes. Its subtitle files next to it go along. At most 1000 jobs.';
+
+schemas.push({
   $id: 'ReplaceBatch',
   type: 'object',
   properties: {
@@ -334,6 +367,96 @@ export const paths = {
         },
       },
       400: { description: 'ids is not a list, or empty.', $ref: 'Error#' },
+    },
+  },
+  'POST /api/jobs/output/delete/preview': {
+    operationId: 'previewDeleteJobOutputs',
+    tags: ['Jobs'],
+    summary: 'What deleting converted files would remove',
+    description: `Changes nothing. Says what \`POST /api/jobs/output/delete\` would delete for these jobs, and what it would refuse. ${outputRules}`,
+    body: idsBody('Ids of the jobs.'),
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          items: outputItems('deleted'),
+          blocked: { type: 'array', items: { $ref: 'OutputBlocked#' } },
+          files: { type: 'integer' },
+          bytes: { type: 'integer' },
+        },
+      },
+      400: { description: 'ids is not a list, empty, or longer than 1000.', $ref: 'Error#' },
+    },
+  },
+  'POST /api/jobs/output/delete': {
+    operationId: 'deleteJobOutputs',
+    tags: ['Jobs'],
+    summary: 'Delete converted files and their jobs',
+    description: 'Deletes for good (no recycle bin) the converted files of these jobs, with their subtitle files, checking everything again first, then removes the jobs (as `POST /api/jobs/remove`; the conversions stay in the statistics). What is refused comes back in `blocked`; a failure on one file (e.g. permissions) is in `errors`, and its job stays. See the preview for the rules.',
+    body: idsBody('Ids of the jobs.'),
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          deleted: { type: 'array', items: { type: 'string' }, description: 'Paths removed.' },
+          removedJobs: { type: 'array', items: { type: 'integer' }, description: 'Jobs removed.' },
+          blocked: { type: 'array', items: { $ref: 'OutputBlocked#' } },
+          errors: { type: 'array', items: { type: 'object', properties: { path: { type: 'string' }, reason: { type: 'string' } } } },
+        },
+      },
+      400: { description: 'ids is not a list, empty, or longer than 1000.', $ref: 'Error#' },
+    },
+  },
+  'POST /api/jobs/output/move/preview': {
+    operationId: 'previewMoveJobOutputs',
+    tags: ['Jobs'],
+    summary: 'What moving converted files would do',
+    description: `Changes nothing. Says what \`POST /api/jobs/output/move\` would move into \`dest\` (any folder under a sources folder or the target folder), where each file would go, and what it would refuse; nothing is overwritten. ${outputRules}`,
+    body: {
+      type: 'object',
+      properties: {
+        ids: { type: 'array', items: { type: 'integer' }, description: 'Ids of the jobs.' },
+        dest: { type: 'string', description: 'Absolute path of the folder to move them into.' },
+      },
+      required: ['ids', 'dest'],
+    },
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          dest: { type: 'string', description: 'The destination folder.' },
+          items: outputItems('moved'),
+          blocked: { type: 'array', items: { $ref: 'OutputBlocked#' } },
+          files: { type: 'integer' },
+          bytes: { type: 'integer' },
+        },
+      },
+      400: { description: 'ids is not a list, empty or longer than 1000, or the destination is not a folder under the configured folders.', $ref: 'Error#' },
+    },
+  },
+  'POST /api/jobs/output/move': {
+    operationId: 'moveJobOutputs',
+    tags: ['Jobs'],
+    summary: 'Move converted files in the background',
+    description: 'Checks like `POST /api/jobs/output/move/preview` and adds what can go to the background list of moves (`GET /api/files/move`, `move` events), then answers at once. Each file is checked again just before it is moved. Once a file is moved, its jobs’ `outputPath` is the new place (sent as `job` events).',
+    body: {
+      type: 'object',
+      properties: {
+        ids: { type: 'array', items: { type: 'integer' }, description: 'Ids of the jobs.' },
+        dest: { type: 'string', description: 'Absolute path of the folder to move them into.' },
+      },
+      required: ['ids', 'dest'],
+    },
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          blocked: { type: 'array', items: { $ref: 'OutputBlocked#' }, description: 'What was not added, with the reason.' },
+          move: { oneOf: [{ $ref: 'MoveBatch#' }, { type: 'null' }], description: 'The list of moves; null when nothing was added and there was no list.' },
+        },
+      },
+      400: { description: 'ids is not a list, empty or longer than 1000, or the destination is not a folder under the configured folders.', $ref: 'Error#' },
+      409: { description: 'Moving is being cancelled.', $ref: 'Error#' },
     },
   },
   'POST /api/jobs/clear': {
@@ -617,6 +740,10 @@ export const examples = [
   { method: 'POST', url: '/api/jobs/remove', body: { ids: [1] } },
   { method: 'POST', url: '/api/jobs/clear', body: { statuses: ['done', 'failed', 'cancelled'] } },
   { method: 'POST', url: '/api/jobs/retry', body: { ids: [3, 4, 5] } },
+  { method: 'POST', url: '/api/jobs/output/delete/preview', body: { ids: [1, 2] } },
+  { method: 'POST', url: '/api/jobs/output/delete', body: { ids: [1, 2] } },
+  { method: 'POST', url: '/api/jobs/output/move/preview', body: { ids: [1, 2], dest: '/mnt/media/Films' } },
+  { method: 'POST', url: '/api/jobs/output/move', body: { ids: [1, 2], dest: '/mnt/media/Films' } },
   { method: 'POST', url: '/api/jobs/1/pause', body: {} },
   { method: 'POST', url: '/api/jobs/1/resume', body: {} },
   { method: 'POST', url: '/api/jobs/1/cancel', body: {} },

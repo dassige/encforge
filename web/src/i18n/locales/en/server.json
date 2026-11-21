@@ -160,6 +160,16 @@
     "gone": "{name} no longer exists",
     "videoNotMoved": "{name} was not moved, so its subtitle file stays with it"
   },
+  "output": {
+    "noJob": "Job {id} no longer exists",
+    "notDone": "{name} is not converted yet",
+    "checking": "{name} is being checked: wait for the check",
+    "replacedOriginal": "{name} replaced its original: it is a source file now (use Sources)",
+    "replacing": "The original of {name} is being replaced",
+    "outside": "{name} is no longer in the target folder or a sources folder",
+    "gone": "{name} no longer exists",
+    "pendingOutput": "{name} is queued to be converted again: remove that job from the queue first"
+  },
   "backup": {
     "busy": {
       "conversion": "a conversion is running",
@@ -187,6 +197,7 @@
     "checking": "The converted file is being checked: wait for the check",
     "checkFailed": "The check after conversion failed: the original is not replaced",
     "noOutput": "The converted file is gone",
+    "moving": "The converted file is being moved: wait for the move",
     "outsideSources": "The original is no longer in a sources folder",
     "protected": "The original is in a protected sources folder (Settings → Folders)",
     "pending": "The original is queued or converting again: remove it from the queue first",

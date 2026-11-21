@@ -1,7 +1,7 @@
 import { MAX_CHUNK } from './upload.js';
 
 /** Changes to the sources folders: uploads, new folders, deleting and moving. */
-export function registerUploadRoutes(app, { uploads, sourceFiles, mover }) {
+export function registerUploadRoutes(app, { uploads, sourceFiles, mover, outputs }) {
   // Upload chunks arrive as raw bytes; the handler streams them to disk.
   app.addContentTypeParser('application/octet-stream', (req, payload, done) => done(null, payload));
 
@@ -23,4 +23,10 @@ export function registerUploadRoutes(app, { uploads, sourceFiles, mover }) {
     mover.clear();
     return { ok: true };
   });
+
+  // The converted files of jobs ({ ids }): deleted with their jobs, or moved like the above.
+  app.post('/api/jobs/output/delete/preview', async (req) => outputs.previewDelete(req.body ?? {}));
+  app.post('/api/jobs/output/delete', async (req) => outputs.remove(req.body ?? {}));
+  app.post('/api/jobs/output/move/preview', async (req) => outputs.previewMove(req.body ?? {}));
+  app.post('/api/jobs/output/move', async (req) => outputs.startMove(req.body ?? {}));
 }

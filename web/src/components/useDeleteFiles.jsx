@@ -14,7 +14,7 @@ function Blocked({ list }) {
       <p className="small"><strong>{t('components.delete.notDeleted')}</strong></p>
       <ul className="ask-list small">
         {list.slice(0, SHOW).map((b) => (
-          <li key={b.path}>
+          <li key={`${b.jobId ?? ''}:${b.path}`}>
             {fileName(b.path)}: <span className="muted">{deleteReason(b)}</span>
           </li>
         ))}
@@ -24,19 +24,27 @@ function Blocked({ list }) {
   );
 }
 
+// What is deleted: files and folders in Sources (by path), or converted files of jobs (by job id),
+// whose jobs then leave the queue.
+const KINDS = {
+  files: { preview: api.deletePreview, remove: (paths) => api.deleteFiles(paths), noteKey: null, warningKey: 'components.delete.warning' },
+  outputs: { preview: api.outputDeletePreview, remove: (ids) => api.deleteOutputs(ids), noteKey: 'components.delete.jobsRemoved', warningKey: 'components.delete.warningOutputs' },
+};
+
 /**
- * Returns remove(paths): shows exactly what would be deleted, asks, then deletes.
- * Resolves to true when something was deleted.
+ * Returns remove(what): shows exactly what would be deleted, asks, then deletes. what: paths, or
+ * with kind 'outputs' job ids (their converted files). Resolves to true when something was deleted.
  */
-export function useDeleteFiles({ onError, onNotice }) {
+export function useDeleteFiles({ onError, onNotice, kind = 'files' }) {
   const dialogs = useDialogs();
+  const how = KINDS[kind];
 
   return useCallback(
-    async (paths) => {
-      if (!paths.length) return false;
+    async (what) => {
+      if (!what.length) return false;
       let preview;
       try {
-        preview = await api.deletePreview(paths);
+        preview = await how.preview(what);
       } catch (e) {
         onError?.(e);
         return false;
@@ -80,8 +88,9 @@ export function useDeleteFiles({ onError, onNotice }) {
               </ul>
             )}
             <Blocked list={blocked} />
+            {how.noteKey && <p className="small">{t(how.noteKey, { count: new Set(items.flatMap((i) => i.jobIds ?? [])).size })}</p>}
             <p className="text-bad small">
-              {t('components.delete.warning')}
+              {t(how.warningKey)}
             </p>
           </>
         ),
@@ -92,7 +101,8 @@ export function useDeleteFiles({ onError, onNotice }) {
       });
       if (!ok) return false;
       try {
-        const r = await api.deleteFiles(items.map((i) => i.path));
+        // Converted files: the jobs, checked again by the server (subtitle files go with them).
+        const r = await how.remove(kind === 'outputs' ? [...new Set(items.flatMap((i) => i.jobIds ?? []))] : items.map((i) => i.path));
         if (r.deleted.length) onNotice?.(t('components.delete.deleted', { count: r.deleted.length }));
         const problems = [...r.blocked, ...r.errors];
         if (problems.length) onError?.(new Error(t('components.delete.notDeletedList', { list: problems.map((b) => `${fileName(b.path)} (${deleteReason(b)})`).join('; ') })));
@@ -102,6 +112,6 @@ export function useDeleteFiles({ onError, onNotice }) {
         return false;
       }
     },
-    [dialogs, onError, onNotice],
+    [dialogs, onError, onNotice, how, kind],
   );
 }
